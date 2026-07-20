@@ -78,15 +78,47 @@
     }
   }
 
-  /* ---------- Marquee / ticker: duplicate content for a seamless loop ---------- */
-  document.querySelectorAll(".marquee-track, .ticker-track").forEach((track) => {
-    // Duplicate the existing children once so the -50% keyframe loops seamlessly.
-    Array.from(track.children).forEach((child) => {
-      const clone = child.cloneNode(true);
-      clone.setAttribute("aria-hidden", "true");
-      track.appendChild(clone);
+  /* ---------- Marquee / ticker: seamless loop ----------
+     The CSS animates the track to translateX(-50%). That only loops with no gap
+     if the track is an EVEN number of identical copies AND one half is at least
+     as wide as the container — otherwise a gap appears at the reset point on
+     wide screens. So we duplicate the original set enough times to cover ~2x the
+     container width, rounded up to an even number of copies. */
+  const buildMarquee = (track) => {
+    const container = track.parentElement;
+    const original = Array.from(track.children).filter((el) => !el.hasAttribute("aria-hidden"));
+    if (!original.length) return;
+    // Remove any previous clones (e.g. on resize) before re-measuring.
+    Array.from(track.children).forEach((el) => {
+      if (el.hasAttribute("aria-hidden")) el.remove();
     });
-  });
+    const setWidth = track.scrollWidth;
+    const containerWidth = (container && container.clientWidth) || window.innerWidth;
+    if (!setWidth) return;
+    let copies = Math.max(2, Math.ceil((containerWidth * 2) / setWidth));
+    if (copies % 2 !== 0) copies += 1;
+    for (let c = 1; c < copies; c++) {
+      original.forEach((el) => {
+        const clone = el.cloneNode(true);
+        clone.setAttribute("aria-hidden", "true");
+        track.appendChild(clone);
+      });
+    }
+  };
+
+  const marqueeTracks = document.querySelectorAll(".marquee-track, .ticker-track");
+  if (marqueeTracks.length) {
+    marqueeTracks.forEach(buildMarquee);
+    // Re-fit once webfonts have loaded (text width can change) and on resize.
+    if (document.fonts && document.fonts.ready) {
+      document.fonts.ready.then(() => marqueeTracks.forEach(buildMarquee));
+    }
+    let resizeTimer;
+    window.addEventListener("resize", () => {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(() => marqueeTracks.forEach(buildMarquee), 250);
+    });
+  }
 
   /* ---------- Gallery lightbox ---------- */
   const lightbox = document.querySelector("[data-lightbox]");

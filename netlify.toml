@@ -9,11 +9,12 @@
   to = "/quote.html"
   status = 200
 
-# Long-cache the static media so repeat visits are fast.
+# Cache media for a day — fast repeat visits, but not "immutable" so replaced
+# images (same filename) still propagate within 24h instead of being stuck.
 [[headers]]
   for = "/Images/*"
   [headers.values]
-    Cache-Control = "public, max-age=31536000, immutable"
+    Cache-Control = "public, max-age=86400"
 
 # CSS/JS share fixed filenames, so they must revalidate (via ETag) on each load
 # — otherwise updates don't reach returning visitors until the cache expires.
