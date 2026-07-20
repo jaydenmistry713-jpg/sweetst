@@ -15,7 +15,10 @@
   [headers.values]
     Cache-Control = "public, max-age=31536000, immutable"
 
+# CSS/JS share fixed filenames, so they must revalidate (via ETag) on each load
+# — otherwise updates don't reach returning visitors until the cache expires.
+# Do NOT long-cache these unless the filenames become content-hashed.
 [[headers]]
   for = "/assets/*"
   [headers.values]
-    Cache-Control = "public, max-age=604800"
+    Cache-Control = "public, max-age=0, must-revalidate"
