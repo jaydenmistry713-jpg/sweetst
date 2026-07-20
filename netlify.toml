@@ -1,0 +1,21 @@
+[build]
+  publish = "."
+  functions = "netlify/functions"
+
+# Pretty client-facing quote URLs: /quote/<slug> renders the viewer page,
+# which reads the slug from the path and fetches the quote via the API.
+[[redirects]]
+  from = "/quote/*"
+  to = "/quote.html"
+  status = 200
+
+# Long-cache the static media so repeat visits are fast.
+[[headers]]
+  for = "/Images/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/assets/*"
+  [headers.values]
+    Cache-Control = "public, max-age=604800"

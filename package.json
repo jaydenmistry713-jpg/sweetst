@@ -1,0 +1,14 @@
+{
+  "name": "sweetst",
+  "version": "1.0.0",
+  "description": "Sweet St. — mini pancakes, waffle cart & Indian street food catering. Multi-page marketing site with a Netlify-powered quote builder.",
+  "private": true,
+  "scripts": {
+    "dev": "netlify dev",
+    "build": "echo 'Static site — no build step'"
+  },
+  "dependencies": {
+    "@netlify/blobs": "^8.1.0",
+    "@netlify/functions": "^2.8.1"
+  }
+}

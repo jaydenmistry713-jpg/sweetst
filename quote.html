@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Your Quote | Sweet St.</title>
+  <meta name="robots" content="noindex, nofollow" />
+  <meta property="og:title" content="Your Sweet St. Quote" />
+  <meta property="og:image" content="https://sweetst.co.uk/Images/Logo.png" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/assets/css/style.css" />
+</head>
+<body>
+  <main class="quote-wrap">
+    <!-- Loading state -->
+    <div class="quote-state" id="loadingState">
+      <div class="spinner"></div>
+      <p>Loading your quote…</p>
+    </div>
+
+    <!-- Error / not found state -->
+    <div class="quote-state hidden" id="errorState">
+      <img src="/Images/Logo.png" alt="Sweet St." style="height:56px;margin:0 auto 20px" />
+      <h1>Quote not found</h1>
+      <p class="mt-s" style="color:var(--on-dark-soft)">This quote link may have expired or is incorrect. Please contact us and we'll happily sort it out.</p>
+      <div class="btn-row mt-m" style="justify-content:center">
+        <a href="/contact.html" class="btn btn-primary">Contact Sweet St.</a>
+      </div>
+    </div>
+
+    <!-- Quote document -->
+    <article class="quote-doc hidden" id="quoteDoc">
+      <header class="quote-doc-head">
+        <img src="/Images/Logo.png" alt="Sweet St. logo" />
+        <span class="eyebrow">Your personalised quote</span>
+        <h1 id="qClientName">—</h1>
+      </header>
+      <div class="quote-doc-body">
+        <div class="quote-meta">
+          <div id="qEventTypeWrap" class="hidden">
+            <div class="label">Event</div>
+            <div class="val" id="qEventType">—</div>
+          </div>
+          <div id="qEventDateWrap" class="hidden">
+            <div class="label">Date</div>
+            <div class="val" id="qEventDate">—</div>
+          </div>
+          <div id="qGuestsWrap" class="hidden">
+            <div class="label">Guests</div>
+            <div class="val" id="qGuests">—</div>
+          </div>
+          <div>
+            <div class="label">Quote ref</div>
+            <div class="val" id="qRef">—</div>
+          </div>
+        </div>
+
+        <div class="quote-block" id="qServicesBlock">
+          <h2>Included services</h2>
+          <div class="service-tags" id="qServices"></div>
+        </div>
+
+        <div class="quote-block hidden" id="qMessageBlock">
+          <h2>A note from us</h2>
+          <p class="quote-message" id="qMessage"></p>
+        </div>
+
+        <div class="price-row">
+          <span class="price-label">Your quote</span>
+          <span class="price-tag" id="qPrice">—</span>
+        </div>
+
+        <div class="quote-actions">
+          <a href="#" class="btn btn-primary btn-lg btn-arrow" id="qAccept">Accept &amp; book this quote</a>
+          <a href="https://wa.me/447983408097" class="btn btn-ghost btn-lg" target="_blank" rel="noopener">Ask a question</a>
+        </div>
+        <p class="quote-valid hidden" id="qValidWrap">Valid until <span id="qValid"></span></p>
+        <p class="quote-valid">Sweet St. · sweetstuk@outlook.com · +44 7983 408 097</p>
+      </div>
+    </article>
+  </main>
+
+  <script src="/assets/js/quote.js"></script>
+</body>
+</html>

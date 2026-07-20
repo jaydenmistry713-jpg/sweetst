@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+Disallow: /admin.html
+Disallow: /quote.html
+Disallow: /quote/
+
+Sitemap: https://sweetst.co.uk/sitemap.xml

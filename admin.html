@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Quote Builder | Sweet St. (Private)</title>
+  <meta name="robots" content="noindex, nofollow" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/assets/css/style.css" />
+</head>
+<body>
+  <main class="admin-shell">
+    <div class="admin-card">
+      <div class="brand-lockup">
+        <img src="/Images/Logo.png" alt="Sweet St." />
+        <strong style="font-family:var(--font-display);font-size:1.3rem">Quote Builder</strong>
+      </div>
+
+      <!-- GATE -->
+      <div class="gate" id="gate">
+        <span class="eyebrow">Private area</span>
+        <h1 class="section-title" style="font-size:1.8rem;margin-top:6px">Enter password</h1>
+        <p class="lead mt-s" style="font-size:1rem">This tool creates client quote links. Enter your password to continue.</p>
+        <form id="gateForm" class="mt-m">
+          <div class="field">
+            <label for="gatePassword">Password</label>
+            <input type="password" id="gatePassword" autocomplete="current-password" required />
+          </div>
+          <button type="submit" class="btn btn-primary btn-lg" style="width:100%;margin-top:16px">Unlock</button>
+          <div class="form-status" id="gateStatus" role="status" aria-live="polite"></div>
+        </form>
+      </div>
+
+      <!-- BUILDER -->
+      <div class="hidden" id="builder">
+        <div class="admin-tabs">
+          <button type="button" class="admin-tab is-active" data-tab="bookings">Bookings</button>
+          <button type="button" class="admin-tab" data-tab="quote">New Quote</button>
+        </div>
+
+        <!-- BOOKINGS TAB -->
+        <div class="tab-panel" id="tab-bookings">
+          <div class="bookings-head">
+            <span class="eyebrow">Enquiries</span>
+            <button type="button" class="link-btn" id="refreshBookings">↻ Refresh</button>
+          </div>
+          <div id="bookingsList" class="bookings-list"><p class="muted">Loading enquiries…</p></div>
+        </div>
+
+        <!-- QUOTE TAB -->
+        <div class="tab-panel hidden" id="tab-quote">
+        <span class="eyebrow">New quote</span>
+        <h1 class="section-title" style="font-size:1.8rem;margin-top:6px">Create a client quote</h1>
+        <p class="lead mt-s" style="font-size:1rem">Fill in the details, generate the link, and paste it into your email.</p>
+        <div class="prefill-note hidden" id="prefillNote"></div>
+
+        <form id="quoteForm" class="mt-m">
+          <input type="hidden" id="linkedBookingId" value="" />
+          <div class="form-grid">
+            <div class="field">
+              <label for="clientName">Client name *</label>
+              <input type="text" id="clientName" name="clientName" placeholder="e.g. Sarah &amp; Ahmed" required />
+            </div>
+            <div class="field">
+              <label for="eventType">Event type</label>
+              <input type="text" id="eventType" name="eventType" placeholder="e.g. Wedding reception" />
+            </div>
+            <div class="field">
+              <label for="eventDate">Event date</label>
+              <input type="date" id="eventDate" name="eventDate" />
+            </div>
+            <div class="field">
+              <label for="guests">Guests</label>
+              <input type="text" id="guests" name="guests" placeholder="e.g. 120" />
+            </div>
+
+            <div class="field full">
+              <label>Services</label>
+              <div class="checks">
+                <label class="check"><input type="checkbox" name="services" value="Mini Pancakes" /> Mini Pancakes</label>
+                <label class="check"><input type="checkbox" name="services" value="Waffle Cart" /> Waffle Cart</label>
+                <label class="check"><input type="checkbox" name="services" value="Gol Gappe &amp; Chaat" /> Gol Gappe &amp; Chaat</label>
+                <label class="check"><input type="checkbox" name="services" value="Masala Chai" /> Masala Chai</label>
+              </div>
+            </div>
+
+            <div class="field">
+              <label for="price">Quote price *</label>
+              <input type="text" id="price" name="price" placeholder="e.g. 450 or £450 + travel" required />
+            </div>
+            <div class="field">
+              <label for="validUntil">Valid until</label>
+              <input type="date" id="validUntil" name="validUntil" />
+            </div>
+
+            <div class="field full">
+              <label for="message">Message to client</label>
+              <textarea id="message" name="message" placeholder="A personal note — what's included, next steps, etc."></textarea>
+            </div>
+          </div>
+
+          <button type="submit" class="btn btn-primary btn-lg" style="width:100%;margin-top:8px">Generate quote link</button>
+          <div class="form-status" id="formStatus" role="status" aria-live="polite"></div>
+        </form>
+
+        <!-- RESULT -->
+        <div class="result-box" id="resultBox">
+          <strong style="color:var(--gold-deep)">✓ Quote link created</strong>
+          <p style="font-size:0.92rem;color:var(--ink-soft);margin-top:6px">Copy this and paste it into your email to the client:</p>
+          <div class="result-url">
+            <input type="text" id="resultUrl" readonly />
+            <button type="button" class="btn btn-primary" id="copyBtn">Copy</button>
+          </div>
+          <div class="btn-row mt-s">
+            <a href="#" target="_blank" rel="noopener" class="btn btn-ghost btn-arrow" id="previewLink">Preview quote</a>
+            <button type="button" class="btn btn-ghost" id="anotherBtn">Create another</button>
+          </div>
+        </div>
+        </div><!-- /tab-quote -->
+      </div>
+    </div>
+  </main>
+
+  <script src="/assets/js/admin.js"></script>
+</body>
+</html>
