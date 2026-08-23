@@ -185,10 +185,16 @@ exercise the quote system. Local Blobs are a separate sandbox from production.
   have no emoji icons either. CTA bands can take a media background via
   `class="cta-band cta-media"` + a `.cta-bg` `<img>`/`<video>` child (the `.cta-bg` must NOT be
   matched by the content-lift rule — see the `:not(.cta-bg)` selector in `style.css`).
-- **SEO titles** follow `[service keyword] | Sweet St` (e.g. "Delicious Mini Pancake Cart
-  Hire | Sweet St"); descriptions list the services (Dutch mini pancakes, waffle station,
-  gol gappe, chaat, chai) + example events. `<title>`, `meta description`, and og/twitter
-  tags are kept in sync per page. `quote.html`/`admin.html` stay `noindex`.
+- **SEO titles** follow `[service keyword] | Sweet St` (e.g. the home page is "Mini Pancake
+  Cart & Waffle Station Hire | Sweet St"); descriptions list the services (Dutch mini
+  pancakes, waffle station, gol gappe, chaat, chai) + example events. `<title>`,
+  `meta description`, and og/twitter tags are kept in sync per page. Keep titles under ~60
+  characters so Google does not truncate them. `quote.html`/`admin.html` stay `noindex`.
+- **Search Console signal (Aug 2026):** "waffle station leicester" is by far the biggest
+  query (343 impressions / 28 days, 0 clicks), ahead of "sweet st", "pancake cart" and
+  "pancakes leicester". The home title was widened to cover waffles because of this. The
+  owner chose to leave "Leicester" out of the title to stay UK-wide, so the geo term is
+  currently unaddressed on the home page — revisit via the meta description if clicks stay flat.
 - Testimonials are illustrative; replace with real named reviews when possible.
 - Do not fabricate stats/metrics. The homepage trust strip uses only verifiable facts.
 
