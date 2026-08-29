@@ -35,6 +35,8 @@ export default async (req: Request) => {
   const id =
     "bk_" + Date.now().toString(36) + "_" + Math.random().toString(36).slice(2, 7);
 
+  const now = new Date().toISOString();
+
   const record = {
     id,
     name,
@@ -46,9 +48,16 @@ export default async (req: Request) => {
     location: String(data.location || "").trim(),
     services: services.map((s: any) => String(s)),
     message: String(data.message || "").trim(),
-    status: "new", // new | quoted | archived
+    notes: "", // internal notes, added in the admin panel
+    total: "", // agreed price, set when the booking is confirmed
+    deposit: "",
+    depositPaidAt: "",
+    confirmedAt: "",
+    status: "new", // new | quoted | confirmed | done | cancelled
     quoteSlug: "",
-    createdAt: new Date().toISOString(),
+    source: "website",
+    createdAt: now,
+    updatedAt: now,
   };
 
   const store = getStore({ name: "bookings", consistency: "strong" });

@@ -49,32 +49,41 @@ Deployed on **Netlify** at `https://sweetst.co.uk`.
   gallery.html        Full photo gallery (lightbox) + event video rail
   contact.html        Booking form (Netlify Forms) + FAQ  ← main conversion page
   quote.html          Client-facing quote viewer (noindex) — reads /quote/<slug>
-  admin.html          Owner-only quote builder (noindex, password-gated)
+  admin.html          Owner-only bookings CRM + quote builder (noindex, password-gated).
+                      Also holds the hidden `booking-confirmed` Netlify Forms stub.
 
   assets/
     css/style.css     The entire design system (tokens + components)
     js/main.js        Header, mobile nav, scroll-reveal, lightbox, marquee, form
     js/quote.js       Fetches & renders a saved quote on quote.html
-    js/admin.js       Password gate + quote creation on admin.html
+    js/admin.js       Gate, bookings list, calendar, run sheet, quote creation
 
   netlify/functions/
     create-quote.mts  POST /api/quotes  — admin-gated; verifies password, writes Blob, returns slug+url
     get-quote.mts     GET  /api/quotes/:slug — public read for the quote viewer
     save-booking.mts  POST /api/bookings — public; contact form saves each enquiry to the `bookings` Blob store (honeypot-checked)
-    bookings-admin.mts POST /api/bookings-admin — admin-gated; action: list | update | delete
+    bookings-admin.mts POST /api/bookings-admin — admin-gated; action: list | create |
+                      update | confirm | delete. `confirm` also fires the notification email.
 
   netlify.toml        publish=".", functions dir, /quote/* → /quote.html rewrite, cache headers
   package.json        deps: @netlify/blobs, @netlify/functions
   Images/             All media (see casing note below)
   sitemap.xml, robots.txt, site.webmanifest, favicons
+  seo-changes.txt     Plain-text log of the Aug 2026 SEO work (not site content;
+                      publish="." means it IS publicly readable if committed)
 ```
 
 ## Conventions
 
-- **Asset path casing matters.** Netlify hosting is case-sensitive. The media folder is
-  `Images/` (capital I) and photo files are `.JPEG` (uppercase). Always reference exact
-  case, e.g. `/Images/gallery-1.JPEG`, `/Images/Logo.png`. The space in
-  `Images/Instagram Icon.png` is URL-encoded as `%20`.
+- **Asset path casing matters.** Netlify hosting is case-sensitive; Windows is not, so a
+  wrong-case path passes locally and 404s in production. The media folder is `Images/`
+  (capital I). Extensions are **mixed by history**: older photos are `.JPEG` (uppercase),
+  some are `.jpeg`, and everything added from Aug 2026 onward is lowercase `.jpg` / `.mp4`.
+  Never assume — check the real filename, e.g. `/Images/cart-pancake.JPEG` but
+  `/Images/waffle-station-griddle.jpg` and `/Images/chaat-counter.jpeg`. The space in
+  `Images/Instagram Icon.png` is URL-encoded as `%20`. Prefer lowercase `.jpg` for new files.
+  Worth re-running after any media change: list `Images/`, then check every `/Images/...`
+  reference in the HTML against it with an exact (case-sensitive) match.
 - **Header, footer and the WhatsApp float are duplicated in each page** (no templating).
   If you change one, update all page files to match. The header nav contains a **Services
   dropdown** (`li.has-sub` > `ul.sub-menu`) listing the four service pages — CSS-only
@@ -121,7 +130,8 @@ Deployed on **Netlify** at `https://sweetst.co.uk`.
   wide-gamut photos, and it fails silently.
   Older originals are recoverable from git history; newer source media is gitignored (below).
 - **Cache-busting for CSS/JS:** the `<link>`/`<script>` refs carry a `?v=N` query
-  (currently `?v=3`). `/assets/*` is `must-revalidate` and `/Images/*` is `max-age=86400`
+  (currently `?v=4`, bumped sitewide — including `quote.html`/`admin.html`, which had lagged
+  at `?v=2`). `/assets/*` is `must-revalidate` and `/Images/*` is `max-age=86400`
   (see `netlify.toml`). When you change `style.css`/`main.js` etc., bump the `?v=` number so
   returning visitors get the update immediately.
 
@@ -185,21 +195,83 @@ Security model: the admin **page** is public source (noindex only), but every se
 action is validated **server-side** against `ADMIN_PASSWORD`. Quote reads are public — the
 slug is the access token, so slugs should stay unguessable-ish (numeric suffix on collision).
 
-## Bookings (admin panel)
+## Bookings CRM (admin panel)
 
-The admin page has two tabs: **Bookings** and **New Quote**.
+`/admin.html` is a small mobile-first CRM. One person (the owner) uses it; the second owner
+is reached only by the confirmation email below. Three sections, switched by a **fixed
+bottom tab bar** (`.admin-nav`, becomes a row of tabs under the header at >=700px):
+**Bookings**, **Calendar**, **New Quote**.
 
-1. On the contact form submit, `main.js` fires two requests: the normal Netlify Forms POST
-   (email notification, unchanged) **and** a POST to `/api/bookings` (`save-booking`) that
-   stores the enquiry in the **`bookings`** Blob store with `status: "new"`.
-2. The admin **Bookings** tab calls `bookings-admin` (`action: "list"`, password-gated) and
-   renders each enquiry. Booking fields are **escaped** in `admin.js` (stored-XSS safety —
-   enquiry text is untrusted).
-3. **"Create quote →"** on a booking pre-fills the quote form (client name, event date,
-   guests, matched service checkboxes) and switches to the New Quote tab; the owner only
-   adds price + message. Service matching maps the form's "Chai" to the quote's "Masala Chai".
-4. On generate, the linked booking is marked `status: "quoted"` (with the quote slug), so the
-   list shows what's outstanding. Bookings can also be marked quoted/new or deleted.
+### Data model (the `bookings` Blob store)
+
+Website enquiries (`save-booking.mts`) and manual entries (`bookings-admin` `action:
+"create"`) write the same shape:
+
+```
+id name email phone guests date time location services[] message
+notes total deposit depositPaidAt confirmedAt notifiedAt
+status  new | quoted | confirmed | done | cancelled
+quoteSlug  source: "website" | "manual"  createdAt updatedAt
+```
+
+`date` is always `YYYY-MM-DD` (from `input[type=date]`) — the calendar keys off that string,
+so parse it as `new Date(key + "T00:00:00")`, never `new Date(key)`, or it shifts a day in
+some timezones. Money fields are free text; `toNumber()` strips everything but digits/dot.
+Balance = total - deposit, computed at render, never stored.
+
+### Lifecycle
+
+1. Enquiry arrives (contact form) or the owner taps **+ Add** for a phone/WhatsApp/Instagram
+   booking. Status `new`.
+2. **Create quote** pre-fills the quote form from the booking (name, date, guests, agreed
+   total as the price, matched service checkboxes — "Chai" maps to "Masala Chai") and
+   switches to the Quote tab. On generate the booking gets the `quoteSlug` and moves to
+   `quoted` — but **only if it was `new`**; a confirmed booking is never downgraded.
+3. **Deposit paid → confirm** is the single money moment: the owner enters the agreed total
+   and the deposit taken, and the booking becomes `confirmed`. Confirmation and deposit are
+   deliberately one action, not two — the booking is not confirmed until the deposit lands.
+4. `done` / `cancelled` are manual. `done` keeps old events out of the active list.
+
+### Calendar tab
+
+"Next up" card (nearest future booking that is not done/cancelled) + a Monday-first month
+grid. Days carry up to three dots — green = confirmed, rose = not yet. Tapping a day opens
+that day's bookings and a **Print run sheet** button: a print-only `#runsheet` (see the
+`@media print` block) listing each job's time, address, contact name + number, services,
+guests, balance due, **notes** and the original enquiry message. Screen UI is hidden in
+print; the run sheet is `display:none` otherwise.
+
+### The confirmation email (how it actually works)
+
+**Netlify Functions have no send-email API.** Netlify's email notifications fire on a
+*Netlify Forms submission*, so `bookings-admin`'s `confirm` action POSTs urlencoded data to
+`${URL}/` with `form-name=booking-confirmed`. That form is declared as a hidden stub in
+**`admin.html`** purely so the Git build detects it — **deleting that stub silently kills
+confirmation emails.** The recipient is set once in the dashboard (see below), not in code.
+
+- Fields are `client`, `event`, `location` and a pre-formatted multi-line `details` blob,
+  plus an empty `bot-field`. The blob exists because Netlify renders a form email as a plain
+  field list; putting the summary in one field keeps it readable. The honeypot is declared on
+  the stub (`netlify-honeypot="bot-field"`) and sent empty — that is what marks the
+  submission human, and it matters more here than on a normal form because a Function POST
+  arrives with no browser referer and is otherwise a good spam-filter candidate.
+- `notifiedAt` guards against re-sending: re-confirming or editing amounts saves without a
+  second email. If the POST fails the flag is not set, so the next confirm retries, and the
+  UI tells the owner the email did not go out.
+- These submissions share the site's Forms quota with the `contact` form (87 submissions as
+  of Aug 2026). The site is on a **Pro team** (`nf_team_pro`), so the cap is well above the
+  free tier's 100/month — confirmations are low volume and not a practical concern.
+
+### Safety notes
+
+- Enquiry text is untrusted: every booking field is escaped through `escapeHtml` in
+  `admin.js` (it escapes quotes too, because values also land in `href`/`data-` attributes).
+  Verified with a stored `<img src=x onerror=...>` payload — it renders as text.
+- The password is kept in `sessionStorage` so backgrounding the phone does not log the owner
+  out; the ⏻ button clears it. Every privileged action is still re-validated server-side.
+- `.admin-app .btn { width: auto }` deliberately opts out of the site-wide mobile rule
+  `.btn { width: 100% }` (which exists for the marketing pages' stacked CTAs). Without it
+  every admin button stretches to full width on a phone.
 
 ## Required Netlify configuration
 
@@ -211,6 +283,12 @@ The admin page has two tabs: **Bookings** and **New Quote**.
   **Email notifications are a manual one-time step** in the dashboard: Site config →
   Forms/Notifications → add an Email notification. Detection + email do not happen from the
   tags alone.
+- **Second form `booking-confirmed`** (stub in `admin.html`) — after the first deploy, add an
+  Email notification on it pointing at the **second owner's address**. This is the only place
+  that address lives; it is not in the repo — and the Netlify MCP has no operation for
+  notifications, so this cannot be scripted. Until it is done, confirming a booking works but
+  nobody is emailed. If a confirmation never arrives, check **Forms → Spam** before anything
+  else: a Function POST has no browser referer, which is the likeliest reason one is held.
 - Functions and Blobs need no extra config on Netlify; Blobs auto-provision.
 
 ## Deployment
@@ -241,15 +319,27 @@ exercise the quote system. Local Blobs are a separate sandbox from production.
 - Toppings/sauces are **hard-coded text** in `menu.html` and the home menu teaser
   (the old `Images/Toppings.png` / `Sauces.png` are no longer referenced). If the real
   menu changes, edit those lists. Toppings & sauces apply to **both** pancake and waffle carts.
-- Real photography lives in `Images/` with web-safe names: `cart-pancake.JPEG` (pink
-  pancake cart), `cart-chai*.JPEG` (chai cart), `pancakes-griddle.JPEG` / `pancakes-event.JPEG`
-  (mini pancakes cooking), `chaat-bowl.jpeg` / `chaat-samosas.jpeg` / `chaat-counter.jpeg`
-  (real chaat counter), and clips `vid-batter.mp4`, `vid-topping.mp4`, `vid-topping-2.mp4`,
-  `vid-drone.mp4`. The old stock `chaat.jpg` was removed. `event-aerial.jpg` is stored but
-  unused (it is rotated/sideways).
-- **No waffle photo exists yet.** The Waffle Cart tile (home) and service block (services)
-  currently reuse `pancakes-event.JPEG` as a placeholder — swap for a real waffle shot when
-  available.
+- Real photography lives in `Images/` with descriptive names: `cart-pancake.JPEG` (pink
+  pancake cart), `cart-chai*.JPEG` (chai cart), `pancakes-griddle.JPEG` /
+  `pancakes-event.JPEG` (mini pancakes cooking), `chaat-bowl.jpeg` / `chaat-samosas.jpeg` /
+  `chaat-counter.jpeg` (chaat counter), the `waffle-*.jpg` set (see media pipeline), and
+  clips `vid-batter.mp4`, `vid-topping.mp4`, `vid-topping-2.mp4`, `vid-drone.mp4`,
+  `event3.mp4`-`event5.mp4` plus the `waffle-*.mp4` set.
+- **The `gallery-1..8.JPEG` files no longer exist.** They were renamed on 29 Aug 2026 to
+  describe their contents: `cart-sequin-backdrop.jpg`, `toppings-trays-strawberries.jpg`,
+  `chaat-counter-serving-guests.jpg`, `dessert-finished-to-order.jpg`,
+  `mini-pancakes-chocolate-strawberries.jpg`, `pancake-batter-on-griddle.jpg`,
+  `sweets-cart-blossom-styling.jpg`, `pancake-griddle-event-lighting.jpg`. Old URLs 404 —
+  that is expected and accepted (a short dip in Google Images while it rediscovers them).
+- `event-aerial.jpg` is stored but unused (rotated/sideways). `event1.mp4`, `event2.mp4`,
+  `event6.mp4` and `hero-video.mp4` are stored; `event6.mp4` was dropped from the homepage
+  rail in favour of a waffle clip. The old stock `chaat.jpg` was removed.
+- **Homepage video rail** = 6 clips: `vid-batter`, `vid-topping`, `event3`, `event4`,
+  `event5`, `waffle-chocolate-sauce`. Every one has a `-poster.jpg`; keep it that way or
+  tiles render as blank boxes until the observer starts playback.
+- **Waffle photography now exists** (added 29 Aug 2026) — see "Media pipeline & the waffle
+  assets". The homepage Waffle tile uses `waffle-on-a-stick.jpg` and the waffle page uses
+  real waffle shots throughout. No `pancakes-event.JPEG` placeholders remain anywhere.
 - Homepage service cards are image **tiles** (`.tile`), not emoji cards; the menu page cards
   have no emoji icons either. CTA bands can take a media background via
   `class="cta-band cta-media"` + a `.cta-bg` `<img>`/`<video>` child (the `.cta-bg` must NOT be
@@ -259,11 +349,16 @@ exercise the quote system. Local Blobs are a separate sandbox from production.
   pancakes, waffle station, gol gappe, chaat, chai) + example events. `<title>`,
   `meta description`, and og/twitter tags are kept in sync per page. Keep titles under ~60
   characters so Google does not truncate them. `quote.html`/`admin.html` stay `noindex`.
-- **Search Console signal (Aug 2026):** "waffle station leicester" is by far the biggest
-  query (343 impressions / 28 days, 0 clicks), ahead of "sweet st", "pancake cart" and
-  "pancakes leicester". The home title was widened to cover waffles because of this. The
-  owner chose to leave "Leicester" out of the title to stay UK-wide, so the geo term is
-  currently unaddressed on the home page — revisit via the meta description if clicks stay flat.
+- **Search Console signal (Aug 2026):** "waffle station leicester" was by far the biggest
+  query — **343 impressions / 28 days, 0 clicks** — ahead of "sweet st", "pancake cart" and
+  "pancakes leicester". This is the number that drove the whole service split. The geo term
+  is now carried by the service page titles (e.g. "Waffle Station Hire Leicester") while the
+  home page stays UK-wide, which was the owner's explicit choice.
+  **Watch this:** the home title still contains "Waffle Station Hire", so it and
+  `/waffle-station-hire.html` compete for the same query, and the home page has more
+  authority. If the service page cannot gain ground on that query, the shared title is why —
+  the fix would be broadening the home title. Owner declined that on 29 Aug 2026, knowing
+  the trade-off. Baseline for comparison: 343 impressions / 0 clicks per 28 days.
 - Testimonials are illustrative; replace with real named reviews when possible.
 - Do not fabricate stats/metrics. The homepage trust strip uses only verifiable facts.
 

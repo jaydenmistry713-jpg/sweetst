@@ -2,28 +2,48 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Quote Builder | Sweet St. (Private)</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>Admin | Sweet St. (Private)</title>
   <meta name="robots" content="noindex, nofollow" />
+  <meta name="theme-color" content="#4f3d2b" />
   <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="/assets/css/style.css?v=2" />
+  <link rel="stylesheet" href="/assets/css/style.css?v=4" />
 </head>
-<body>
-  <main class="admin-shell">
+<body class="admin-body">
+
+  <!-- ============================================================
+       Netlify Forms detection stub.
+       This form is never shown or submitted by a person. The
+       bookings-admin function POSTs to it when a booking is
+       confirmed, so Netlify's Email notification (configured once in
+       Site config > Forms > Notifications) delivers the alert.
+       Netlify only detects forms present in the built HTML — do not
+       remove this block or confirmation emails stop working.
+       ============================================================ -->
+  <form name="booking-confirmed" data-netlify="true" netlify-honeypot="bot-field" hidden aria-hidden="true">
+    <input type="hidden" name="form-name" value="booking-confirmed" />
+    <input name="bot-field" />
+    <input type="text" name="client" />
+    <input type="text" name="event" />
+    <input type="text" name="location" />
+    <textarea name="details"></textarea>
+  </form>
+
+  <!-- ================= GATE ================= -->
+  <main class="admin-shell" id="gateShell">
     <div class="admin-card">
       <div class="brand-lockup">
         <img src="/Images/Logo.png" alt="Sweet St." />
-        <strong style="font-family:var(--font-display);font-size:1.3rem">Quote Builder</strong>
+        <strong style="font-family:var(--font-display);font-size:1.3rem">Admin</strong>
       </div>
-
-      <!-- GATE -->
-      <div class="gate" id="gate">
+      <div class="gate">
         <span class="eyebrow">Private area</span>
         <h1 class="section-title" style="font-size:1.8rem;margin-top:6px">Enter password</h1>
-        <p class="lead mt-s" style="font-size:1rem">This tool creates client quote links. Enter your password to continue.</p>
+        <p class="lead mt-s" style="font-size:1rem">Bookings, calendar and client quotes. Enter your password to continue.</p>
         <form id="gateForm" class="mt-m">
           <div class="field">
             <label for="gatePassword">Password</label>
@@ -33,28 +53,80 @@
           <div class="form-status" id="gateStatus" role="status" aria-live="polite"></div>
         </form>
       </div>
+    </div>
+  </main>
 
-      <!-- BUILDER -->
-      <div class="hidden" id="builder">
-        <div class="admin-tabs">
-          <button type="button" class="admin-tab is-active" data-tab="bookings">Bookings</button>
-          <button type="button" class="admin-tab" data-tab="quote">New Quote</button>
-        </div>
+  <!-- ================= APP ================= -->
+  <div class="admin-app hidden" id="app">
 
-        <!-- BOOKINGS TAB -->
-        <div class="tab-panel" id="tab-bookings">
-          <div class="bookings-head">
-            <span class="eyebrow">Enquiries</span>
-            <button type="button" class="link-btn" id="refreshBookings">↻ Refresh</button>
+    <header class="admin-bar">
+      <div class="admin-bar-brand">
+        <img src="/Images/Logo.png" alt="" />
+        <span id="barTitle">Bookings</span>
+      </div>
+      <div class="admin-bar-actions">
+        <button type="button" class="icon-btn" id="refreshBookings" title="Refresh" aria-label="Refresh bookings">⟳</button>
+        <button type="button" class="icon-btn" id="logoutBtn" title="Lock" aria-label="Lock the admin panel">⏻</button>
+      </div>
+    </header>
+
+    <div class="admin-main">
+
+      <!-- ---------- BOOKINGS ---------- -->
+      <section class="tab-panel" id="tab-bookings" aria-label="Bookings">
+        <div class="panel-head">
+          <div>
+            <span class="eyebrow">Enquiries &amp; bookings</span>
+            <h1 class="panel-title">All bookings</h1>
           </div>
-          <div id="bookingsList" class="bookings-list"><p class="muted">Loading enquiries…</p></div>
+          <button type="button" class="btn btn-primary btn-sm" id="addBookingBtn">+ Add</button>
         </div>
 
-        <!-- QUOTE TAB -->
-        <div class="tab-panel hidden" id="tab-quote">
-        <span class="eyebrow">New quote</span>
-        <h1 class="section-title" style="font-size:1.8rem;margin-top:6px">Create a client quote</h1>
-        <p class="lead mt-s" style="font-size:1rem">Fill in the details, generate the link, and paste it into your email.</p>
+        <div class="chips" id="statusFilter" role="tablist" aria-label="Filter by status">
+          <button type="button" class="chip is-active" data-filter="all">All</button>
+          <button type="button" class="chip" data-filter="new">New</button>
+          <button type="button" class="chip" data-filter="quoted">Quoted</button>
+          <button type="button" class="chip" data-filter="confirmed">Confirmed</button>
+          <button type="button" class="chip" data-filter="done">Done</button>
+        </div>
+
+        <div id="bookingsList" class="bookings-list"><p class="muted">Loading enquiries…</p></div>
+      </section>
+
+      <!-- ---------- CALENDAR ---------- -->
+      <section class="tab-panel hidden" id="tab-calendar" aria-label="Calendar">
+        <div class="panel-head">
+          <div>
+            <span class="eyebrow">Diary</span>
+            <h1 class="panel-title">Calendar</h1>
+          </div>
+        </div>
+
+        <div id="nextUp"></div>
+
+        <div class="cal-head">
+          <button type="button" class="icon-btn" id="calPrev" aria-label="Previous month">‹</button>
+          <strong id="calMonth">—</strong>
+          <button type="button" class="icon-btn" id="calNext" aria-label="Next month">›</button>
+        </div>
+        <div class="cal-dow" aria-hidden="true">
+          <span>M</span><span>T</span><span>W</span><span>T</span><span>F</span><span>S</span><span>S</span>
+        </div>
+        <div class="cal-grid" id="calGrid"></div>
+        <p class="cal-key"><i class="dot confirmed"></i> Confirmed &nbsp; <i class="dot pending"></i> Not yet confirmed</p>
+
+        <div class="day-panel" id="dayPanel"></div>
+      </section>
+
+      <!-- ---------- NEW QUOTE ---------- -->
+      <section class="tab-panel hidden" id="tab-quote" aria-label="New quote">
+        <div class="panel-head">
+          <div>
+            <span class="eyebrow">New quote</span>
+            <h1 class="panel-title">Create a client quote</h1>
+          </div>
+        </div>
+        <p class="lead" style="font-size:0.98rem">Fill in the details, generate the link, and paste it into your email.</p>
         <div class="prefill-note hidden" id="prefillNote"></div>
 
         <form id="quoteForm" class="mt-m">
@@ -106,7 +178,6 @@
           <div class="form-status" id="formStatus" role="status" aria-live="polite"></div>
         </form>
 
-        <!-- RESULT -->
         <div class="result-box" id="resultBox">
           <strong style="color:var(--gold-deep)">✓ Quote link created</strong>
           <p style="font-size:0.92rem;color:var(--ink-soft);margin-top:6px">Copy this and paste it into your email to the client:</p>
@@ -119,11 +190,39 @@
             <button type="button" class="btn btn-ghost" id="anotherBtn">Create another</button>
           </div>
         </div>
-        </div><!-- /tab-quote -->
-      </div>
-    </div>
-  </main>
+      </section>
 
-  <script src="/assets/js/admin.js?v=2"></script>
+    </div><!-- /admin-main -->
+
+    <!-- ---------- BOTTOM TAB BAR ---------- -->
+    <nav class="admin-nav" aria-label="Sections">
+      <button type="button" class="admin-tab is-active" data-tab="bookings">
+        <span class="tab-ico" aria-hidden="true">📋</span><span>Bookings</span>
+      </button>
+      <button type="button" class="admin-tab" data-tab="calendar">
+        <span class="tab-ico" aria-hidden="true">📅</span><span>Calendar</span>
+      </button>
+      <button type="button" class="admin-tab" data-tab="quote">
+        <span class="tab-ico" aria-hidden="true">✎</span><span>Quote</span>
+      </button>
+    </nav>
+  </div>
+
+  <!-- ================= SLIDE-UP SHEET ================= -->
+  <div class="sheet-wrap hidden" id="sheet" role="dialog" aria-modal="true" aria-labelledby="sheetTitle">
+    <div class="sheet-backdrop" data-close></div>
+    <div class="sheet">
+      <div class="sheet-head">
+        <strong id="sheetTitle">Details</strong>
+        <button type="button" class="icon-btn" data-close aria-label="Close">✕</button>
+      </div>
+      <div class="sheet-body" id="sheetBody"></div>
+    </div>
+  </div>
+
+  <!-- Print-only run sheet, filled in by admin.js -->
+  <div class="runsheet" id="runsheet" aria-hidden="true"></div>
+
+  <script src="/assets/js/admin.js?v=4"></script>
 </body>
 </html>
