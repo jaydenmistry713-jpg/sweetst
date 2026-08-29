@@ -13,6 +13,7 @@
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://sweetst.co.uk/" />
   <meta property="og:title" content="Mini Pancake Cart & Waffle Station Hire | Sweet St" />
+  <meta property="og:site_name" content="Sweet St" />
   <meta property="og:description" content="Eggless Dutch mini pancakes, waffle station, gol gappe, chaat & masala chai catering for weddings, birthdays & private events. Leicester-based, serving the UK." />
   <meta property="og:image" content="https://sweetst.co.uk/Images/Logo.png" />
   <meta name="twitter:card" content="summary_large_image" />
@@ -29,10 +30,12 @@
   {
     "@context": "https://schema.org",
     "@type": "FoodEstablishment",
+    "@id": "https://sweetst.co.uk/#business",
     "name": "Sweet St",
     "alternateName": ["Sweet Street", "Sweet St Catering"],
     "image": "https://sweetst.co.uk/Images/Logo.png",
-    "description": "Leicester-based catering: live eggless mini Dutch pancakes, waffle cart and authentic Indian street food for weddings, birthdays and private events across England. Vegan, halal-friendly and nut-free options available.",
+    "logo": "https://sweetst.co.uk/Images/Logo.png",
+    "description": "Leicester-based catering: live eggless mini Dutch pancakes, waffle cart and authentic Indian street food for weddings, birthdays and private events across England. Vegan, halal and nut-free options available.",
     "address": { "@type": "PostalAddress", "addressLocality": "Leicester", "addressRegion": "Leicestershire", "addressCountry": "GB" },
     "areaServed": [
       { "@type": "Country", "name": "United Kingdom" },
@@ -48,14 +51,36 @@
     "email": "sweetstuk@outlook.com",
     "url": "https://sweetst.co.uk/",
     "sameAs": ["https://www.instagram.com/sw33t_st_dessertsuk/", "https://www.tiktok.com/@sweetstuk"],
-    "acceptsReservations": true
+    "acceptsReservations": true,
+    "hasOfferCatalog": {
+      "@type": "OfferCatalog",
+      "name": "Catering services",
+      "itemListElement": [
+        { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Mini Pancake Cart Hire", "url": "https://sweetst.co.uk/mini-pancake-cart-hire.html" } },
+        { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Waffle Station Hire", "url": "https://sweetst.co.uk/waffle-station-hire.html" } },
+        { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Gol Gappe & Chaat Catering", "url": "https://sweetst.co.uk/gol-gappe-chaat-catering.html" } },
+        { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Masala Chai Cart Hire", "url": "https://sweetst.co.uk/masala-chai-cart-hire.html" } }
+      ]
+    }
   }
   </script>
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Inter:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,600;1,700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="/assets/css/style.css?v=2" />
+  <link rel="stylesheet" href="/assets/css/style.css?v=3" />
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "@id": "https://sweetst.co.uk/#website",
+    "name": "Sweet St",
+    "alternateName": ["Sweet Street", "Sweet St Catering"],
+    "url": "https://sweetst.co.uk/",
+    "inLanguage": "en-GB",
+    "publisher": { "@id": "https://sweetst.co.uk/#business" }
+  }
+  </script>
 </head>
 <body>
   <div class="nav-backdrop"></div>
@@ -71,7 +96,15 @@
       <nav class="nav" id="nav" aria-label="Main navigation">
         <ul class="nav-links">
           <li><a href="/" aria-current="page">Home</a></li>
-          <li><a href="/services.html">Services</a></li>
+          <li class="has-sub">
+            <a href="/services.html" class="sub-toggle">Services <svg viewBox="0 0 10 6" aria-hidden="true" focusable="false"><path d="M1 1l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+            <ul class="sub-menu">
+              <li><a href="/mini-pancake-cart-hire.html">Mini Pancake Cart</a></li>
+              <li><a href="/waffle-station-hire.html">Waffle Station</a></li>
+              <li><a href="/gol-gappe-chaat-catering.html">Gol Gappe &amp; Chaat</a></li>
+              <li><a href="/masala-chai-cart-hire.html">Masala Chai Cart</a></li>
+            </ul>
+          </li>
           <li><a href="/menu.html">Menu</a></li>
           <li><a href="/gallery.html">Gallery</a></li>
           <li><a href="/contact.html">Contact</a></li>
@@ -146,21 +179,21 @@
         <div class="heart-rule">✦</div>
       </div>
       <div class="tiles">
-        <a class="tile reveal" href="/services.html#pancakes">
+        <a class="tile reveal" href="/mini-pancake-cart-hire.html">
           <img class="tile-bg" src="/Images/pancakes-griddle.JPEG" alt="Mini pancakes cooking live on the griddle" loading="lazy" />
-          <span class="tile-body"><span class="tile-title">Mini Pancakes</span><span class="tile-tag">Eggless, cooked live</span><span class="card-link">Learn more</span></span>
+          <span class="tile-body"><span class="tile-title">Mini Pancake Cart</span><span class="tile-tag">Eggless, cooked live</span><span class="card-link">See the cart</span></span>
         </a>
-        <a class="tile reveal" href="/services.html#waffles" style="--delay:.06s">
-          <img class="tile-bg" src="/Images/pancakes-event.JPEG" alt="Fresh treats made live at a Sweet St. event" loading="lazy" />
-          <span class="tile-body"><span class="tile-title">Waffle Cart</span><span class="tile-tag">Golden &amp; fresh</span><span class="card-link">Learn more</span></span>
+        <a class="tile reveal" href="/waffle-station-hire.html" style="--delay:.06s">
+          <img class="tile-bg" src="/Images/waffle-on-a-stick.jpg" alt="Waffle on a stick with chocolate sauce from the Sweet St. waffle station" loading="lazy" />
+          <span class="tile-body"><span class="tile-title">Waffle Station</span><span class="tile-tag">Golden &amp; fresh</span><span class="card-link">See the cart</span></span>
         </a>
-        <a class="tile reveal" href="/services.html#chaat" style="--delay:.12s">
+        <a class="tile reveal" href="/gol-gappe-chaat-catering.html" style="--delay:.12s">
           <img class="tile-bg" src="/Images/chaat-bowl.jpeg" alt="Freshly made samosa chaat served at a Sweet St. event" loading="lazy" />
-          <span class="tile-body"><span class="tile-title">Gol Gappe &amp; Chaat</span><span class="tile-tag">Authentic street food</span><span class="card-link">Learn more</span></span>
+          <span class="tile-body"><span class="tile-title">Gol Gappe &amp; Chaat</span><span class="tile-tag">Authentic street food</span><span class="card-link">See the cart</span></span>
         </a>
-        <a class="tile reveal" href="/services.html#chai" style="--delay:.18s">
+        <a class="tile reveal" href="/masala-chai-cart-hire.html" style="--delay:.18s">
           <img class="tile-bg" src="/Images/cart-chai.JPEG" alt="The Sweet St. masala chai cart" loading="lazy" />
-          <span class="tile-body"><span class="tile-title">Masala Chai</span><span class="tile-tag">Warm &amp; aromatic</span><span class="card-link">Learn more</span></span>
+          <span class="tile-body"><span class="tile-title">Masala Chai Cart</span><span class="tile-tag">Warm &amp; aromatic</span><span class="card-link">See the cart</span></span>
         </a>
       </div>
     </div>
@@ -174,12 +207,12 @@
         <h2 class="section-title">See us in action</h2>
       </div>
       <div class="rail reveal" aria-label="Videos from previous Sweet St. events">
-        <div class="rail-item"><video muted loop playsinline preload="none" aria-label="Batter poured onto the mini pancake griddle"><source src="/Images/vid-batter.mp4" type="video/mp4" /></video></div>
-        <div class="rail-item"><video muted loop playsinline preload="none" aria-label="A mini pancake being topped"><source src="/Images/vid-topping.mp4" type="video/mp4" /></video></div>
-        <div class="rail-item"><video muted loop playsinline preload="none" aria-label="Indian street food catering"><source src="/Images/event3.mp4" type="video/mp4" /></video></div>
-        <div class="rail-item"><video muted loop playsinline preload="none" aria-label="Wedding catering with eggless pancakes"><source src="/Images/event4.mp4" type="video/mp4" /></video></div>
-        <div class="rail-item"><video muted loop playsinline preload="none" aria-label="Event dessert catering by Sweet St."><source src="/Images/event5.mp4" type="video/mp4" /></video></div>
-        <div class="rail-item"><video muted loop playsinline preload="none" aria-label="Birthday party dessert catering"><source src="/Images/event6.mp4" type="video/mp4" /></video></div>
+        <div class="rail-item"><video muted loop playsinline preload="none" poster="/Images/vid-batter-poster.jpg" aria-label="Batter poured onto the mini pancake griddle"><source src="/Images/vid-batter.mp4" type="video/mp4" /></video></div>
+        <div class="rail-item"><video muted loop playsinline preload="none" poster="/Images/vid-topping-poster.jpg" aria-label="A mini pancake being topped"><source src="/Images/vid-topping.mp4" type="video/mp4" /></video></div>
+        <div class="rail-item"><video muted loop playsinline preload="none" poster="/Images/event3-poster.jpg" aria-label="Indian street food catering"><source src="/Images/event3.mp4" type="video/mp4" /></video></div>
+        <div class="rail-item"><video muted loop playsinline preload="none" poster="/Images/event4-poster.jpg" aria-label="Wedding catering with eggless pancakes"><source src="/Images/event4.mp4" type="video/mp4" /></video></div>
+        <div class="rail-item"><video muted loop playsinline preload="none" poster="/Images/event5-poster.jpg" aria-label="Event dessert catering by Sweet St."><source src="/Images/event5.mp4" type="video/mp4" /></video></div>
+        <div class="rail-item"><video muted loop playsinline preload="none" poster="/Images/waffle-chocolate-sauce-poster.jpg" aria-label="Warm chocolate sauce poured over a freshly cooked waffle"><source src="/Images/waffle-chocolate-sauce.mp4" type="video/mp4" /></video></div>
       </div>
       <div class="text-center mt-l reveal"><a href="/gallery.html" class="btn btn-ghost btn-arrow">See the gallery</a></div>
     </div>
@@ -217,10 +250,10 @@
         <h2 class="section-title">A taste of our events</h2>
       </div>
       <div class="gallery reveal" data-gallery>
-        <div class="gallery-item"><img src="/Images/gallery-1.JPEG" alt="Sweet St. catering event 1" loading="lazy" /></div>
-        <div class="gallery-item"><img src="/Images/gallery-2.JPEG" alt="Sweet St. catering event 2" loading="lazy" /></div>
-        <div class="gallery-item"><img src="/Images/gallery-3.JPEG" alt="Sweet St. catering event 3" loading="lazy" /></div>
-        <div class="gallery-item"><img src="/Images/gallery-4.JPEG" alt="Sweet St. catering event 4" loading="lazy" /></div>
+        <div class="gallery-item"><img src="/Images/cart-sequin-backdrop.jpg" alt="The Sweet St. cart served by our team against a sequin backdrop at an evening event" loading="lazy" /></div>
+        <div class="gallery-item"><img src="/Images/toppings-trays-strawberries.jpg" alt="Topping trays of fresh strawberries, white chocolate chips and biscuit crumbs" loading="lazy" /></div>
+        <div class="gallery-item"><img src="/Images/chaat-counter-serving-guests.jpg" alt="Guests served chaat and street food snacks at the Sweet St. counter" loading="lazy" /></div>
+        <div class="gallery-item"><img src="/Images/dessert-finished-to-order.jpg" alt="A Sweet St. server finishing a dessert to order at the cart" loading="lazy" /></div>
       </div>
       <div class="text-center mt-l reveal"><a href="/gallery.html" class="btn btn-primary btn-arrow">View full gallery</a></div>
     </div>
@@ -260,7 +293,11 @@
         <div class="footer-col">
           <h4>Explore</h4>
           <ul>
-            <li><a href="/services.html">Services</a></li>
+            <li><a href="/services.html">All services</a></li>
+            <li><a href="/mini-pancake-cart-hire.html">Mini pancake cart</a></li>
+            <li><a href="/waffle-station-hire.html">Waffle station</a></li>
+            <li><a href="/gol-gappe-chaat-catering.html">Gol gappe &amp; chaat</a></li>
+            <li><a href="/masala-chai-cart-hire.html">Masala chai cart</a></li>
             <li><a href="/menu.html">Menu</a></li>
             <li><a href="/gallery.html">Gallery</a></li>
             <li><a href="/contact.html">Get a Quote</a></li>
@@ -288,6 +325,6 @@
     <img src="/Images/whatsapp-logo.png" alt="WhatsApp" />
   </a>
 
-  <script src="/assets/js/main.js?v=2"></script>
+  <script src="/assets/js/main.js?v=3"></script>
 </body>
 </html>

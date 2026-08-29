@@ -7,6 +7,7 @@
   <meta name="description" content="Photos & videos from Sweet St. events — Dutch mini pancakes, waffle station, gol gappe, chaat & chai catering for weddings, birthdays & parties across the UK." />
   <link rel="canonical" href="https://sweetst.co.uk/gallery.html" />
   <meta property="og:title" content="Mini Pancake & Street Food Catering Gallery | Sweet St" />
+  <meta property="og:site_name" content="Sweet St" />
   <meta property="og:description" content="Photos & videos from Sweet St. events — Dutch mini pancakes, waffle station, gol gappe, chaat & chai catering for weddings, birthdays & parties across the UK." />
   <meta property="og:image" content="https://sweetst.co.uk/Images/Logo.png" />
   <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
@@ -14,7 +15,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="/assets/css/style.css?v=2" />
+  <link rel="stylesheet" href="/assets/css/style.css?v=3" />
 </head>
 <body>
   <div class="nav-backdrop"></div>
@@ -30,7 +31,15 @@
       <nav class="nav" id="nav" aria-label="Main navigation">
         <ul class="nav-links">
           <li><a href="/">Home</a></li>
-          <li><a href="/services.html">Services</a></li>
+          <li class="has-sub">
+            <a href="/services.html" class="sub-toggle">Services <svg viewBox="0 0 10 6" aria-hidden="true" focusable="false"><path d="M1 1l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+            <ul class="sub-menu">
+              <li><a href="/mini-pancake-cart-hire.html">Mini Pancake Cart</a></li>
+              <li><a href="/waffle-station-hire.html">Waffle Station</a></li>
+              <li><a href="/gol-gappe-chaat-catering.html">Gol Gappe &amp; Chaat</a></li>
+              <li><a href="/masala-chai-cart-hire.html">Masala Chai Cart</a></li>
+            </ul>
+          </li>
           <li><a href="/menu.html">Menu</a></li>
           <li><a href="/gallery.html" aria-current="page">Gallery</a></li>
           <li><a href="/contact.html">Contact</a></li>
@@ -83,22 +92,25 @@
       </div>
       <div class="gallery reveal" data-gallery>
         <div class="gallery-item"><img src="/Images/cart-pancake.JPEG" alt="The Sweet St. pancake cart" loading="lazy" /></div>
+        <div class="gallery-item"><img src="/Images/waffle-station-griddle.jpg" alt="Waffles on sticks cooking in the iron at the Sweet St. waffle station" loading="lazy" /></div>
+        <div class="gallery-item"><img src="/Images/waffle-chocolate-drizzle.jpg" alt="Waffle on a stick finished with milk and white chocolate sauce" loading="lazy" /></div>
+        <div class="gallery-item"><img src="/Images/waffle-station-cart.jpg" alt="A freshly made waffle served in a tray at the waffle cart" loading="lazy" /></div>
         <div class="gallery-item"><img src="/Images/pancakes-griddle.JPEG" alt="Mini pancakes cooking on the griddle" loading="lazy" /></div>
         <div class="gallery-item"><img src="/Images/chaat-bowl.jpeg" alt="Freshly made samosa chaat served at a Sweet St. event" loading="lazy" /></div>
         <div class="gallery-item"><img src="/Images/cart-chai.JPEG" alt="The Sweet St. masala chai cart" loading="lazy" /></div>
         <div class="gallery-item"><img src="/Images/pancakes-event.JPEG" alt="Mini pancakes and toppings at an event" loading="lazy" /></div>
         <div class="gallery-item"><img src="/Images/cart-chai-lit.JPEG" alt="The Sweet St. chai cart with karak chai" loading="lazy" /></div>
         <div class="gallery-item"><img src="/Images/cart-chai-2.JPEG" alt="Masala chai served in terracotta cups" loading="lazy" /></div>
-        <div class="gallery-item"><img src="/Images/gallery-1.JPEG" alt="Sweet St. catering event 1" loading="lazy" /></div>
-        <div class="gallery-item"><img src="/Images/gallery-2.JPEG" alt="Sweet St. catering event 2" loading="lazy" /></div>
+        <div class="gallery-item"><img src="/Images/cart-sequin-backdrop.jpg" alt="The Sweet St. cart served by our team against a sequin backdrop at an evening event" loading="lazy" /></div>
+        <div class="gallery-item"><img src="/Images/toppings-trays-strawberries.jpg" alt="Topping trays of fresh strawberries, white chocolate chips and biscuit crumbs" loading="lazy" /></div>
         <div class="gallery-item"><img src="/Images/chaat-samosas.jpeg" alt="Trays of freshly fried samosas at the chaat counter" loading="lazy" /></div>
-        <div class="gallery-item"><img src="/Images/gallery-3.JPEG" alt="Sweet St. catering event 3" loading="lazy" /></div>
-        <div class="gallery-item"><img src="/Images/gallery-4.JPEG" alt="Sweet St. catering event 4" loading="lazy" /></div>
-        <div class="gallery-item"><img src="/Images/gallery-5.JPEG" alt="Sweet St. catering event 5" loading="lazy" /></div>
-        <div class="gallery-item"><img src="/Images/gallery-6.JPEG" alt="Sweet St. catering event 6" loading="lazy" /></div>
+        <div class="gallery-item"><img src="/Images/chaat-counter-serving-guests.jpg" alt="Guests served chaat and street food snacks at the Sweet St. counter" loading="lazy" /></div>
+        <div class="gallery-item"><img src="/Images/dessert-finished-to-order.jpg" alt="A Sweet St. server finishing a dessert to order at the cart" loading="lazy" /></div>
+        <div class="gallery-item"><img src="/Images/mini-pancakes-chocolate-strawberries.jpg" alt="Trays of mini pancakes with chocolate sauce, cream and fresh strawberries" loading="lazy" /></div>
+        <div class="gallery-item"><img src="/Images/pancake-batter-on-griddle.jpg" alt="Eggless batter poured onto the mini pancake griddle at an event" loading="lazy" /></div>
         <div class="gallery-item"><img src="/Images/chaat-counter.jpeg" alt="The Sweet St. chaat counter serving guests at an event" loading="lazy" /></div>
-        <div class="gallery-item"><img src="/Images/gallery-7.JPEG" alt="Sweet St. catering event 7" loading="lazy" /></div>
-        <div class="gallery-item"><img src="/Images/gallery-8.JPEG" alt="Sweet St. catering event 8" loading="lazy" /></div>
+        <div class="gallery-item"><img src="/Images/sweets-cart-blossom-styling.jpg" alt="The styled Sweet St. sweets cart with blossom trees and warm lighting" loading="lazy" /></div>
+        <div class="gallery-item"><img src="/Images/pancake-griddle-event-lighting.jpg" alt="The mini pancake griddle and topping jars under coloured event lighting" loading="lazy" /></div>
       </div>
     </div>
   </section>
@@ -136,7 +148,11 @@
         <div class="footer-col">
           <h4>Explore</h4>
           <ul>
-            <li><a href="/services.html">Services</a></li>
+            <li><a href="/services.html">All services</a></li>
+            <li><a href="/mini-pancake-cart-hire.html">Mini pancake cart</a></li>
+            <li><a href="/waffle-station-hire.html">Waffle station</a></li>
+            <li><a href="/gol-gappe-chaat-catering.html">Gol gappe &amp; chaat</a></li>
+            <li><a href="/masala-chai-cart-hire.html">Masala chai cart</a></li>
             <li><a href="/menu.html">Menu</a></li>
             <li><a href="/gallery.html">Gallery</a></li>
             <li><a href="/contact.html">Get a Quote</a></li>
@@ -172,6 +188,6 @@
     <img src="/Images/whatsapp-logo.png" alt="WhatsApp" />
   </a>
 
-  <script src="/assets/js/main.js?v=2"></script>
+  <script src="/assets/js/main.js?v=3"></script>
 </body>
 </html>

@@ -7,6 +7,7 @@
   <meta name="description" content="Enquire about Sweet St. catering — Dutch mini pancakes, waffle station, gol gappe, chaat & chai for weddings, birthdays & private events. Get a free UK quote." />
   <link rel="canonical" href="https://sweetst.co.uk/contact.html" />
   <meta property="og:title" content="Get a Mini Pancake Catering Quote | Sweet St" />
+  <meta property="og:site_name" content="Sweet St" />
   <meta property="og:description" content="Enquire about Sweet St. catering — Dutch mini pancakes, waffle station, gol gappe, chaat & chai for weddings, birthdays & private events. Get a free UK quote." />
   <meta property="og:image" content="https://sweetst.co.uk/Images/Logo.png" />
   <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
@@ -14,7 +15,47 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="/assets/css/style.css?v=2" />
+  <link rel="stylesheet" href="/assets/css/style.css?v=3" />
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "How far do you travel?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "We're based in Leicester and travel across all of England — including London, Birmingham, Manchester, Nottingham and beyond."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Are your pancakes really eggless?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes — 100% eggless, every time. We also offer vegan and nut-free options; just let us know your requirements."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Can I combine services?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Absolutely. Many clients pair the mini pancake and waffle carts, and add chaat or chai for the full experience."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How far in advance should I book?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "The earlier the better, especially for weekend and wedding-season dates. Get in touch and we'll check availability for your day."
+      }
+    }
+  ]
+}
+  </script>
 </head>
 <body>
   <div class="nav-backdrop"></div>
@@ -30,7 +71,15 @@
       <nav class="nav" id="nav" aria-label="Main navigation">
         <ul class="nav-links">
           <li><a href="/">Home</a></li>
-          <li><a href="/services.html">Services</a></li>
+          <li class="has-sub">
+            <a href="/services.html" class="sub-toggle">Services <svg viewBox="0 0 10 6" aria-hidden="true" focusable="false"><path d="M1 1l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+            <ul class="sub-menu">
+              <li><a href="/mini-pancake-cart-hire.html">Mini Pancake Cart</a></li>
+              <li><a href="/waffle-station-hire.html">Waffle Station</a></li>
+              <li><a href="/gol-gappe-chaat-catering.html">Gol Gappe &amp; Chaat</a></li>
+              <li><a href="/masala-chai-cart-hire.html">Masala Chai Cart</a></li>
+            </ul>
+          </li>
           <li><a href="/menu.html">Menu</a></li>
           <li><a href="/gallery.html">Gallery</a></li>
           <li><a href="/contact.html" aria-current="page">Contact</a></li>
@@ -183,7 +232,11 @@
         <div class="footer-col">
           <h4>Explore</h4>
           <ul>
-            <li><a href="/services.html">Services</a></li>
+            <li><a href="/services.html">All services</a></li>
+            <li><a href="/mini-pancake-cart-hire.html">Mini pancake cart</a></li>
+            <li><a href="/waffle-station-hire.html">Waffle station</a></li>
+            <li><a href="/gol-gappe-chaat-catering.html">Gol gappe &amp; chaat</a></li>
+            <li><a href="/masala-chai-cart-hire.html">Masala chai cart</a></li>
             <li><a href="/menu.html">Menu</a></li>
             <li><a href="/gallery.html">Gallery</a></li>
             <li><a href="/contact.html">Get a Quote</a></li>
@@ -211,6 +264,6 @@
     <img src="/Images/whatsapp-logo.png" alt="WhatsApp" />
   </a>
 
-  <script src="/assets/js/main.js?v=2"></script>
+  <script src="/assets/js/main.js?v=3"></script>
 </body>
 </html>

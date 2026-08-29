@@ -7,6 +7,7 @@
   <meta name="description" content="Our menu of premium toppings & sauces for eggless mini pancakes & waffles, plus gol gappe, chaat & masala chai. Vegan & nut-free options for any event." />
   <link rel="canonical" href="https://sweetst.co.uk/menu.html" />
   <meta property="og:title" content="Pancake & Waffle Toppings & Sauces Menu | Sweet St" />
+  <meta property="og:site_name" content="Sweet St" />
   <meta property="og:description" content="Our menu of premium toppings & sauces for eggless mini pancakes & waffles, plus gol gappe, chaat & masala chai. Vegan & nut-free options for any event." />
   <meta property="og:image" content="https://sweetst.co.uk/Images/Logo.png" />
   <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
@@ -14,7 +15,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="/assets/css/style.css?v=2" />
+  <link rel="stylesheet" href="/assets/css/style.css?v=3" />
 </head>
 <body>
   <div class="nav-backdrop"></div>
@@ -30,7 +31,15 @@
       <nav class="nav" id="nav" aria-label="Main navigation">
         <ul class="nav-links">
           <li><a href="/">Home</a></li>
-          <li><a href="/services.html">Services</a></li>
+          <li class="has-sub">
+            <a href="/services.html" class="sub-toggle">Services <svg viewBox="0 0 10 6" aria-hidden="true" focusable="false"><path d="M1 1l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+            <ul class="sub-menu">
+              <li><a href="/mini-pancake-cart-hire.html">Mini Pancake Cart</a></li>
+              <li><a href="/waffle-station-hire.html">Waffle Station</a></li>
+              <li><a href="/gol-gappe-chaat-catering.html">Gol Gappe &amp; Chaat</a></li>
+              <li><a href="/masala-chai-cart-hire.html">Masala Chai Cart</a></li>
+            </ul>
+          </li>
           <li><a href="/menu.html" aria-current="page">Menu</a></li>
           <li><a href="/gallery.html">Gallery</a></li>
           <li><a href="/contact.html">Contact</a></li>
@@ -94,53 +103,32 @@
     </div>
   </section>
 
-  <!-- FULL OFFERINGS -->
+  <!-- WHERE THESE ARE SERVED -->
   <section class="section section-cream">
-    <div class="container">
+    <div class="container narrow">
       <div class="section-head center reveal">
-        <span class="eyebrow center">The full spread</span>
-        <h2 class="section-title">Everything we serve</h2>
+        <span class="eyebrow center">Where these are served</span>
+        <h2 class="section-title">Both carts, same menu</h2>
+        <p class="lead mt-s">Everything above is available across our mini pancake cart and our waffle station. Full details, timings and what each cart needs on the day are on the service pages.</p>
       </div>
       <div class="grid grid-2">
-        <article class="card reveal">
-          <h3>Mini Pancakes</h3>
-          <p>Fluffy eggless mini Dutch pancakes cooked live.</p>
-          <ul class="card-list">
-            <li>Made fresh to order in front of your guests</li>
-            <li>Choose from all toppings &amp; sauces above</li>
-            <li>Vegan &amp; nut-free options available</li>
-          </ul>
-        </article>
-        <article class="card reveal" style="--delay:.06s">
-          <h3>Waffle Cart</h3>
-          <p>Crisp, golden waffles served fresh from the cart.</p>
-          <ul class="card-list">
-            <li>Same premium toppings &amp; sauces as pancakes</li>
-            <li>Perfect paired with the mini pancake cart</li>
-            <li>A golden centrepiece for any celebration</li>
-          </ul>
-        </article>
-        <article class="card reveal" style="--delay:.12s">
-          <h3>Gol Gappe &amp; Chaat</h3>
-          <p>Authentic Indian street food, made fresh.</p>
-          <ul class="card-list">
-            <li>Crispy puris with tangy tamarind water</li>
-            <li>Vibrant chaat with authentic spices</li>
-            <li>The perfect savoury counterpoint</li>
-          </ul>
-        </article>
-        <article class="card reveal" style="--delay:.18s">
-          <h3>Masala Chai</h3>
-          <p>Aromatic, traditionally brewed spiced tea.</p>
-          <ul class="card-list">
-            <li>Authentic spice blend</li>
-            <li>A warm welcome for arriving guests</li>
-            <li>Pairs beautifully with dessert</li>
-          </ul>
-        </article>
+        <div class="card reveal">
+          <h3 class="section-title" style="font-size:1.5rem">Mini pancake cart hire</h3>
+          <p class="mt-s">Eggless mini Dutch pancakes cooked live — five per portion, served in a tray and finished to order.</p>
+          <div class="btn-row mt-m">
+            <a href="/mini-pancake-cart-hire.html" class="btn btn-ghost btn-arrow">Mini pancake cart</a>
+          </div>
+        </div>
+        <div class="card reveal" style="--delay:.06s">
+          <h3 class="section-title" style="font-size:1.5rem">Waffle station hire</h3>
+          <p class="mt-s">Crisp, golden waffles made fresh on site and finished with the same toppings and sauces.</p>
+          <div class="btn-row mt-m">
+            <a href="/waffle-station-hire.html" class="btn btn-ghost btn-arrow">Waffle station</a>
+          </div>
+        </div>
       </div>
-      <div class="text-center mt-l reveal">
-        <a href="/contact.html" class="btn btn-primary btn-arrow">Build your package</a>
+      <div class="section-head center reveal mt-l">
+        <p class="lead">Looking for savoury? Our <a href="/gol-gappe-chaat-catering.html">gol gappe &amp; chaat counter</a> and <a href="/masala-chai-cart-hire.html">masala chai cart</a> run their own menus.</p>
       </div>
     </div>
   </section>
@@ -178,7 +166,11 @@
         <div class="footer-col">
           <h4>Explore</h4>
           <ul>
-            <li><a href="/services.html">Services</a></li>
+            <li><a href="/services.html">All services</a></li>
+            <li><a href="/mini-pancake-cart-hire.html">Mini pancake cart</a></li>
+            <li><a href="/waffle-station-hire.html">Waffle station</a></li>
+            <li><a href="/gol-gappe-chaat-catering.html">Gol gappe &amp; chaat</a></li>
+            <li><a href="/masala-chai-cart-hire.html">Masala chai cart</a></li>
             <li><a href="/menu.html">Menu</a></li>
             <li><a href="/gallery.html">Gallery</a></li>
             <li><a href="/contact.html">Get a Quote</a></li>
@@ -206,6 +198,6 @@
     <img src="/Images/whatsapp-logo.png" alt="WhatsApp" />
   </a>
 
-  <script src="/assets/js/main.js?v=2"></script>
+  <script src="/assets/js/main.js?v=3"></script>
 </body>
 </html>

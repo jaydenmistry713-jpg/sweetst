@@ -2336,3 +2336,145 @@ a.card:hover .card-link::after {
     transform: rotate(-2deg);
   }
 }
+
+/* ============================================================
+   NAV DROPDOWN (Services)
+   ============================================================ */
+.nav-links li.has-sub { position: relative; }
+
+.nav-links .sub-toggle { display: inline-flex; align-items: center; gap: 7px; }
+.nav-links .sub-toggle svg {
+  width: 10px; height: 10px; flex: none;
+  transition: transform 0.25s var(--ease);
+}
+.has-sub:hover .sub-toggle svg,
+.has-sub:focus-within .sub-toggle svg { transform: rotate(180deg); }
+
+.sub-menu {
+  position: absolute;
+  top: calc(100% + 16px);
+  left: -18px;
+  min-width: 272px;
+  list-style: none;
+  padding: 10px;
+  background: var(--paper);
+  border: 1.5px solid var(--outline-strong);
+  border-radius: var(--radius);
+  box-shadow: var(--pop-sm), 0 18px 40px rgba(47, 36, 25, 0.14);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-6px);
+  transition: opacity 0.25s var(--ease), transform 0.25s var(--ease), visibility 0.25s;
+  z-index: 1001;
+}
+/* keeps hover alive across the gap between trigger and panel */
+.sub-menu::before { content: ""; position: absolute; top: -16px; left: 0; right: 0; height: 16px; }
+
+.has-sub:hover .sub-menu,
+.has-sub:focus-within .sub-menu { opacity: 1; visibility: visible; transform: translateY(0); }
+
+.sub-menu li { width: 100%; }
+.sub-menu a {
+  display: block;
+  padding: 12px 14px;
+  border-radius: 12px;
+  font-size: 0.93rem;
+  font-weight: 600;
+  color: var(--ink);
+  transition: background 0.2s var(--ease), color 0.2s var(--ease);
+}
+.sub-menu a::after { display: none; }
+.sub-menu a:hover,
+.sub-menu a[aria-current="page"] { background: var(--blush); color: var(--brand-brown); }
+
+@media (max-width: 820px) {
+  .sub-menu {
+    position: static;
+    opacity: 1;
+    visibility: visible;
+    transform: none;
+    min-width: 0;
+    padding: 2px 0 10px 16px;
+    background: transparent;
+    border: 0;
+    box-shadow: none;
+    border-radius: 0;
+  }
+  .sub-menu::before { display: none; }
+  .sub-menu li { border-bottom: 0; }
+  .sub-menu a { padding: 11px 0; font-size: 1rem; color: var(--ink-soft); }
+  .sub-menu a:hover,
+  .sub-menu a[aria-current="page"] { background: transparent; color: var(--brand-brown); }
+  .nav-links .sub-toggle svg { display: none; }
+}
+
+/* fixed 2-up grid — keeps an even set of cards balanced instead of 3+1 */
+.grid-2-fixed { grid-template-columns: repeat(2, 1fr); }
+@media (max-width: 760px) {
+  .grid-2-fixed { grid-template-columns: 1fr; }
+}
+
+/* ============================================================
+   HEADER LEGIBILITY OVER DARK MEDIA HEROES
+   Pages with .page-hero.has-media paint a dark scrim over the
+   image, but .site-header stays transparent until .scrolled —
+   which left dark nav text sitting on a dark photo. Lift the
+   header content to white only while it overlaps that hero.
+   The scrolled (cream) state is deliberately untouched.
+   ============================================================ */
+body:has(.page-hero.has-media) .site-header:not(.scrolled) .brand-name {
+  color: #fff;
+}
+html:not(.nav-open) body:has(.page-hero.has-media) .site-header:not(.scrolled) .nav-toggle span {
+  background: #fff;
+}
+
+@media (min-width: 821px) {
+  body:has(.page-hero.has-media) .site-header:not(.scrolled) .nav-links > li > a {
+    color: #fff;
+  }
+  body:has(.page-hero.has-media) .site-header:not(.scrolled) .nav-links > li > a::after {
+    background: var(--peach);
+  }
+  /* the dropdown panel keeps its own cream surface — its links must stay dark */
+  body:has(.page-hero.has-media) .site-header:not(.scrolled) .sub-menu a {
+    color: var(--ink);
+  }
+  body:has(.page-hero.has-media) .site-header:not(.scrolled) .sub-menu a:hover,
+  body:has(.page-hero.has-media) .site-header:not(.scrolled) .sub-menu a[aria-current="page"] {
+    color: var(--brand-brown);
+  }
+}
+
+/* Ghost buttons sitting directly on a dark hero (e.g. "WhatsApp us") */
+.page-hero.has-media .btn-ghost {
+  border-color: rgba(255, 255, 255, 0.55);
+  color: #fff;
+}
+.page-hero.has-media .btn-ghost:hover {
+  background: rgba(255, 255, 255, 0.14);
+  border-color: #fff;
+  color: #fff;
+}
+
+/* ============================================================
+   CENTRED CARD ROWS
+   .grid auto-fit stretches tracks, so a 6-card set became 4 + 2
+   with the orphans jammed left. Flex + justify-content lets an
+   incomplete last row centre under the ones above it.
+   ============================================================ */
+.grid-center {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.grid-center > * {
+  flex: 0 1 calc((100% - 2 * 24px) / 3);
+  min-width: 240px;
+}
+@media (max-width: 1000px) {
+  .grid-center > * { flex-basis: calc((100% - 24px) / 2); }
+}
+@media (max-width: 680px) {
+  .grid-center > * { flex-basis: 100%; }
+}

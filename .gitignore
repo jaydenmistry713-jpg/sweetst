@@ -3,3 +3,10 @@ node_modules/
 .env
 .DS_Store
 npm-debug.log*
+
+# Source media. Originals stay local; the optimised, colour-managed copies
+# that the site actually uses live directly in Images/.
+# Left untracked deliberately: netlify.toml has publish = ".", so anything
+# committed under Images/ is served publicly, and git keeps large blobs forever.
+Images/waffle images/
+290826/
