@@ -30,6 +30,15 @@ const formatDate = (value: string) => {
   });
 };
 
+/* Matches the 12-hour display the admin UI uses, so the email reads the same. */
+const formatTime = (value: string) => {
+  const m = /^(\d{1,2}):(\d{2})/.exec(value || "");
+  if (!m) return value || "";
+  const h = parseInt(m[1], 10);
+  const h12 = h % 12 === 0 ? 12 : h % 12;
+  return h12 + (m[2] === "00" ? "" : ":" + m[2]) + (h >= 12 ? "pm" : "am");
+};
+
 const money = (v: unknown) => {
   const s = str(v);
   if (!s) return "";
@@ -55,32 +64,33 @@ async function notifyConfirmed(rec: any) {
   const site = str(Netlify.env.get("URL")) || str(Netlify.env.get("DEPLOY_PRIME_URL"));
   if (!site) return { notified: false, notifyError: "Site URL unavailable." };
 
-  const lines = [
-    "Client:    " + rec.name,
-    "Date:      " + (formatDate(rec.date) || "not set") + (rec.time ? " at " + rec.time : ""),
-    "Location:  " + (rec.location || "not set"),
-    "Guests:    " + (rec.guests || "not set"),
-    "Services:  " + ((rec.services || []).join(", ") || "not set"),
-    "Phone:     " + (rec.phone || "not given"),
-    "Email:     " + (rec.email || "not given"),
-    "Total:     " + (money(rec.total) || "not set"),
-    "Deposit:   " + (money(rec.deposit) || "not set") + " (paid)",
-    "Balance:   " + (balanceOf(rec) || "not set"),
-  ];
-  if (rec.notes) lines.push("", "Notes:", rec.notes);
-  if (rec.message) lines.push("", "Original enquiry message:", rec.message);
+  // Netlify renders a notification email as one labelled block per submitted
+  // field, so each value gets its own field — a summary blob alongside them
+  // would just repeat everything. Empty values are omitted rather than sent
+  // blank, otherwise the email carries headings with nothing under them.
+  const body = new URLSearchParams();
+  body.set("form-name", "booking-confirmed");
+  // Declared honeypot on the stub form — sending it empty is what marks the
+  // submission as human, and keeps Netlify's spam filter off a Function POST
+  // that has no browser referer.
+  body.set("bot-field", "");
 
-  const body = new URLSearchParams({
-    "form-name": "booking-confirmed",
-    // Declared honeypot on the stub form — sending it empty is what marks the
-    // submission as human, and keeps Netlify's spam filter off a Function POST
-    // that has no browser referer.
-    "bot-field": "",
-    client: rec.name,
-    event: (formatDate(rec.date) || "date TBC") + (rec.time ? " at " + rec.time : ""),
-    location: rec.location || "not set",
-    details: lines.join("\n"),
-  });
+  const put = (field: string, value: string) => {
+    if (value) body.set(field, value);
+  };
+
+  put("client", rec.name);
+  put("event", (formatDate(rec.date) || "Date TBC") + (rec.time ? " at " + formatTime(rec.time) : ""));
+  put("venue", rec.location);
+  put("guests", rec.guests);
+  put("services", (rec.services || []).join(", "));
+  put("phone", rec.phone);
+  put("client-email", rec.email);
+  put("total", money(rec.total));
+  put("deposit-paid", money(rec.deposit));
+  put("balance-due", balanceOf(rec));
+  put("notes", rec.notes);
+  put("enquiry-message", rec.message);
 
   try {
     const res = await fetch(site.replace(/\/$/, "") + "/", {

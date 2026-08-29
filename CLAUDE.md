@@ -249,12 +249,19 @@ print; the run sheet is `display:none` otherwise.
 **`admin.html`** purely so the Git build detects it — **deleting that stub silently kills
 confirmation emails.** The recipient is set once in the dashboard (see below), not in code.
 
-- Fields are `client`, `event`, `location` and a pre-formatted multi-line `details` blob,
-  plus an empty `bot-field`. The blob exists because Netlify renders a form email as a plain
-  field list; putting the summary in one field keeps it readable. The honeypot is declared on
-  the stub (`netlify-honeypot="bot-field"`) and sent empty — that is what marks the
-  submission human, and it matters more here than on a normal form because a Function POST
-  arrives with no browser referer and is otherwise a good spam-filter candidate.
+- **One field per value**, no summary blob: `client`, `event`, `venue`, `guests`,
+  `services`, `phone`, `client-email`, `total`, `deposit-paid`, `balance-due`, `notes`,
+  `enquiry-message`. Netlify renders a notification email as one labelled block per
+  submitted field, so the first version — individual fields *plus* a formatted `details`
+  blob — printed everything twice. Don't reintroduce the blob. Empty values are **omitted**
+  rather than sent blank, or the email carries headings with nothing under them; field names
+  are chosen to humanise cleanly into the email's labels ("Deposit paid", "Balance due").
+  Anything added here must also be declared in the `admin.html` stub or Netlify won't know
+  the field. Times are formatted 12-hour to match the UI (`3pm`, not `15:00`).
+- The honeypot is declared on the stub (`netlify-honeypot="bot-field"`) and sent empty —
+  that is what marks the submission human, and it matters more here than on a normal form
+  because a Function POST arrives with no browser referer (verified: it lands as a normal
+  submission, not spam) and is otherwise a good spam-filter candidate.
 - `notifiedAt` guards against re-sending: re-confirming or editing amounts saves without a
   second email. If the POST fails the flag is not set, so the next confirm retries, and the
   UI tells the owner the email did not go out.
@@ -289,6 +296,8 @@ confirmation emails.** The recipient is set once in the dashboard (see below), n
   notifications, so this cannot be scripted. Until it is done, confirming a booking works but
   nobody is emailed. If a confirmation never arrives, check **Forms → Spam** before anything
   else: a Function POST has no browser referer, which is the likeliest reason one is held.
+  **Verified end-to-end on 29 Aug 2026** against a throwaway booking — submission accepted as
+  human, email delivered. Swapping the recipient later is a dashboard edit, not a redeploy.
 - Functions and Blobs need no extra config on Netlify; Blobs auto-provision.
 
 ## Deployment
