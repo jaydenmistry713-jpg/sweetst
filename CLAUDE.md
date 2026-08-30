@@ -84,10 +84,12 @@ Deployed on **Netlify** at `https://sweetst.co.uk`.
   (capital I). Extensions are **mixed by history**: older photos are `.JPEG` (uppercase),
   some are `.jpeg`, and everything added from Aug 2026 onward is lowercase `.jpg` / `.mp4`.
   Never assume — check the real filename, e.g. `/Images/cart-pancake.JPEG` but
-  `/Images/waffle-station-griddle.jpg` and `/Images/chaat-counter.jpeg`. The space in
-  `Images/Instagram Icon.png` is URL-encoded as `%20`. Prefer lowercase `.jpg` for new files.
+  `/Images/waffle-station-griddle.jpg` and `/Images/chaat-counter.jpeg`. Avoid spaces in new
+  filenames (the legacy `Images/Instagram Icon.png` would need `%20` — nothing references it
+  now, the social icons are inline SVG). Prefer lowercase `.jpg` for new files.
   Worth re-running after any media change: list `Images/`, then check every `/Images/...`
-  reference in the HTML against it with an exact (case-sensitive) match.
+  reference in the HTML/CSS/JS against it with an exact (case-sensitive) match.
+  **Last audited 30 Aug 2026 — no broken or wrong-case references.**
 - **Header, footer and the WhatsApp float are duplicated in each page** (no templating).
   If you change one, update all page files to match. The header nav contains a **Services
   dropdown** (`li.has-sub` > `ul.sub-menu`) listing the four service pages — CSS-only
@@ -241,7 +243,7 @@ Balance = total - deposit, computed at render, never stored.
    deliberately one action, not two — the booking is not confirmed until the deposit lands.
 4. `done` / `cancelled` are manual. `done` keeps old events out of the active list.
 
-### The shareable booking link (`/book`)
+### The shareable booking link (`/book`, added 30 Aug 2026)
 
 For enquiries that arrive on WhatsApp or Instagram, the owner sends `/book` instead of
 transcribing details out of the chat. The client fills it in themselves and the booking
@@ -378,12 +380,18 @@ exercise the quote system. Local Blobs are a separate sandbox from production.
   `mini-pancakes-chocolate-strawberries.jpg`, `pancake-batter-on-griddle.jpg`,
   `sweets-cart-blossom-styling.jpg`, `pancake-griddle-event-lighting.jpg`. Old URLs 404 —
   that is expected and accepted (a short dip in Google Images while it rediscovers them).
-- `event-aerial.jpg` is stored but unused (rotated/sideways). `event1.mp4`, `event2.mp4`,
-  `event6.mp4` and `hero-video.mp4` are stored; `event6.mp4` was dropped from the homepage
-  rail in favour of a waffle clip. The old stock `chaat.jpg` was removed.
+- **Genuinely unused files in `Images/`** (verified 30 Aug 2026): `event-aerial.jpg`
+  (rotated/sideways), `vid-drone.mp4`, `Instagram Icon.png`, `Tik-Tok.png`, `Toppings.png`,
+  `Sauces.png`, `toppings-board.png`. Everything else is referenced. The old stock
+  `chaat.jpg` was removed.
 - **Homepage video rail** = 6 clips: `vid-batter`, `vid-topping`, `event3`, `event4`,
   `event5`, `waffle-chocolate-sauce`. Every one has a `-poster.jpg`; keep it that way or
-  tiles render as blank boxes until the observer starts playback.
+  tiles render as blank boxes until the observer starts playback. `hero-video.mp4` and
+  `vid-topping-2.mp4` are the homepage **hero collage** videos, not rail clips.
+- **Gallery video rail** (`gallery.html`) = 9 clips: `vid-batter`, `vid-topping`, `event1`,
+  `event2`, `vid-topping-2`, `event3`-`event6`. `event6` runs here but was dropped from the
+  *homepage* rail in favour of a waffle clip. None of these carry a `poster` — see Open
+  items.
 - **Waffle photography now exists** (added 29 Aug 2026) — see "Media pipeline & the waffle
   assets". The homepage Waffle tile uses `waffle-on-a-stick.jpg` and the waffle page uses
   real waffle shots throughout. No `pancakes-event.JPEG` placeholders remain anywhere.
@@ -489,7 +497,12 @@ sitemap reference (it only disallows `/admin.html`, `/quote.html`, `/quote/`), a
   with alt text describing what is actually in each shot; the "Sweet St. catering event N"
   placeholders are gone. Video files (`event3.mp4` etc.) keep generic names deliberately —
   filenames are not a meaningful signal for them, and their `aria-label` carries the meaning.
-  Every rail video now also has a `-poster.jpg` so tiles are not blank before playback.
+  Every **homepage** rail video also has a `-poster.jpg` so tiles are not blank before
+  playback; the gallery rail still has none (Open items).
+- **The gallery rail's 9 videos have no `poster`** — the homepage rail got posters on
+  29 Aug 2026 and the gallery was missed, so those tiles are blank boxes until the
+  IntersectionObserver starts playback. `event1`, `event2`, `event6` and `vid-topping-2`
+  have no `-poster.jpg` on disk yet; the other five do and just need the attribute.
 - ~~Nav links low-contrast over media heroes~~ — **fixed 29 Aug 2026** (see below).
 
 ## Dietary & claims accuracy
