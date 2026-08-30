@@ -1,57 +1,106 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
   <url>
     <loc>https://sweetst.co.uk/</loc>
-    <lastmod>2026-08-29</lastmod>
+    <lastmod>2026-08-30</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
+    <image:image><image:loc>https://sweetst.co.uk/Images/pancakes-griddle.JPEG</image:loc></image:image>
+    <image:image><image:loc>https://sweetst.co.uk/Images/waffle-on-a-stick.jpg</image:loc></image:image>
+    <image:image><image:loc>https://sweetst.co.uk/Images/chaat-bowl.jpeg</image:loc></image:image>
+    <image:image><image:loc>https://sweetst.co.uk/Images/cart-chai.JPEG</image:loc></image:image>
+    <image:image><image:loc>https://sweetst.co.uk/Images/cart-sequin-backdrop.jpg</image:loc></image:image>
+    <image:image><image:loc>https://sweetst.co.uk/Images/toppings-trays-strawberries.jpg</image:loc></image:image>
+    <image:image><image:loc>https://sweetst.co.uk/Images/chaat-counter-serving-guests.jpg</image:loc></image:image>
+    <image:image><image:loc>https://sweetst.co.uk/Images/dessert-finished-to-order.jpg</image:loc></image:image>
+    <image:image><image:loc>https://sweetst.co.uk/Images/cart-pancake.JPEG</image:loc></image:image>
   </url>
   <url>
     <loc>https://sweetst.co.uk/services.html</loc>
-    <lastmod>2026-08-29</lastmod>
+    <lastmod>2026-08-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
+    <image:image><image:loc>https://sweetst.co.uk/Images/Freshly-Made.JPEG</image:loc></image:image>
+    <image:image><image:loc>https://sweetst.co.uk/Images/cart-chai-2.JPEG</image:loc></image:image>
   </url>
   <url>
     <loc>https://sweetst.co.uk/menu.html</loc>
-    <lastmod>2026-08-29</lastmod>
+    <lastmod>2026-08-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
+    <image:image><image:loc>https://sweetst.co.uk/Images/pancakes-griddle.JPEG</image:loc></image:image>
+    <image:image><image:loc>https://sweetst.co.uk/Images/cart-chai-2.JPEG</image:loc></image:image>
   </url>
   <url>
     <loc>https://sweetst.co.uk/gallery.html</loc>
-    <lastmod>2026-08-29</lastmod>
+    <lastmod>2026-08-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
+    <image:image><image:loc>https://sweetst.co.uk/Images/Freshly-Made.JPEG</image:loc></image:image>
+    <image:image><image:loc>https://sweetst.co.uk/Images/cart-pancake.JPEG</image:loc></image:image>
+    <image:image><image:loc>https://sweetst.co.uk/Images/waffle-station-griddle.jpg</image:loc></image:image>
+    <image:image><image:loc>https://sweetst.co.uk/Images/waffle-chocolate-drizzle.jpg</image:loc></image:image>
+    <image:image><image:loc>https://sweetst.co.uk/Images/waffle-station-cart.jpg</image:loc></image:image>
+    <image:image><image:loc>https://sweetst.co.uk/Images/pancakes-griddle.JPEG</image:loc></image:image>
+    <image:image><image:loc>https://sweetst.co.uk/Images/chaat-bowl.jpeg</image:loc></image:image>
+    <image:image><image:loc>https://sweetst.co.uk/Images/cart-chai.JPEG</image:loc></image:image>
+    <image:image><image:loc>https://sweetst.co.uk/Images/pancakes-event.JPEG</image:loc></image:image>
+    <image:image><image:loc>https://sweetst.co.uk/Images/cart-chai-lit.JPEG</image:loc></image:image>
+    <image:image><image:loc>https://sweetst.co.uk/Images/cart-chai-2.JPEG</image:loc></image:image>
+    <image:image><image:loc>https://sweetst.co.uk/Images/cart-sequin-backdrop.jpg</image:loc></image:image>
+    <image:image><image:loc>https://sweetst.co.uk/Images/toppings-trays-strawberries.jpg</image:loc></image:image>
+    <image:image><image:loc>https://sweetst.co.uk/Images/chaat-samosas.jpeg</image:loc></image:image>
+    <image:image><image:loc>https://sweetst.co.uk/Images/chaat-counter-serving-guests.jpg</image:loc></image:image>
+    <image:image><image:loc>https://sweetst.co.uk/Images/dessert-finished-to-order.jpg</image:loc></image:image>
+    <image:image><image:loc>https://sweetst.co.uk/Images/mini-pancakes-chocolate-strawberries.jpg</image:loc></image:image>
+    <image:image><image:loc>https://sweetst.co.uk/Images/pancake-batter-on-griddle.jpg</image:loc></image:image>
+    <image:image><image:loc>https://sweetst.co.uk/Images/chaat-counter.jpeg</image:loc></image:image>
+    <image:image><image:loc>https://sweetst.co.uk/Images/sweets-cart-blossom-styling.jpg</image:loc></image:image>
+    <image:image><image:loc>https://sweetst.co.uk/Images/pancake-griddle-event-lighting.jpg</image:loc></image:image>
   </url>
   <url>
     <loc>https://sweetst.co.uk/contact.html</loc>
-    <lastmod>2026-08-29</lastmod>
+    <lastmod>2026-08-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
+    <image:image><image:loc>https://sweetst.co.uk/Images/cart-chai-lit.JPEG</image:loc></image:image>
   </url>
   <url>
     <loc>https://sweetst.co.uk/mini-pancake-cart-hire.html</loc>
-    <lastmod>2026-08-29</lastmod>
+    <lastmod>2026-08-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
+    <image:image><image:loc>https://sweetst.co.uk/Images/pancakes-griddle.JPEG</image:loc></image:image>
+    <image:image><image:loc>https://sweetst.co.uk/Images/cart-pancake.JPEG</image:loc></image:image>
+    <image:image><image:loc>https://sweetst.co.uk/Images/pancakes-event.JPEG</image:loc></image:image>
   </url>
   <url>
     <loc>https://sweetst.co.uk/waffle-station-hire.html</loc>
-    <lastmod>2026-08-29</lastmod>
+    <lastmod>2026-08-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
+    <image:image><image:loc>https://sweetst.co.uk/Images/waffle-station-griddle.jpg</image:loc></image:image>
+    <image:image><image:loc>https://sweetst.co.uk/Images/waffle-chocolate-drizzle.jpg</image:loc></image:image>
+    <image:image><image:loc>https://sweetst.co.uk/Images/waffle-station-cart.jpg</image:loc></image:image>
+    <image:image><image:loc>https://sweetst.co.uk/Images/waffle-station-serving.jpg</image:loc></image:image>
   </url>
   <url>
     <loc>https://sweetst.co.uk/gol-gappe-chaat-catering.html</loc>
-    <lastmod>2026-08-29</lastmod>
+    <lastmod>2026-08-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
+    <image:image><image:loc>https://sweetst.co.uk/Images/chaat-counter.jpeg</image:loc></image:image>
+    <image:image><image:loc>https://sweetst.co.uk/Images/chaat-samosas.jpeg</image:loc></image:image>
+    <image:image><image:loc>https://sweetst.co.uk/Images/chaat-bowl.jpeg</image:loc></image:image>
   </url>
   <url>
     <loc>https://sweetst.co.uk/masala-chai-cart-hire.html</loc>
-    <lastmod>2026-08-29</lastmod>
+    <lastmod>2026-08-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
+    <image:image><image:loc>https://sweetst.co.uk/Images/cart-chai.JPEG</image:loc></image:image>
+    <image:image><image:loc>https://sweetst.co.uk/Images/cart-chai-2.JPEG</image:loc></image:image>
+    <image:image><image:loc>https://sweetst.co.uk/Images/cart-chai-lit.JPEG</image:loc></image:image>
   </url>
 </urlset>

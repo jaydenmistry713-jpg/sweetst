@@ -456,6 +456,39 @@ with the search volume), not "Waffle Cart".
 **site name** signal — what shows above the URL in results. Don't split these into two
 unlinked entities; the `@id` reference is what stops Google seeing two organisations.
 
+### Image previews in search results (added 30 Aug 2026)
+
+Competitors were showing a strip of photo thumbnails in the SERP and Sweet St was not. The
+cause was that **no page carried `max-image-preview:large`** — without it Google is limited
+to a small or absent thumbnail, and CMS competitors get the directive for free from their
+SEO plugin. Every indexable page now has:
+
+```html
+<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+```
+
+**Any new indexable page must carry this line** or it silently opts out of image thumbnails.
+`book.html` / `quote.html` / `admin.html` stay noindex and do not need it.
+
+Supporting changes made at the same time:
+
+- `og:image` / `twitter:image` were `Logo.png` (718x718) on home, services, menu, gallery and
+  contact — too small to be a preview candidate and wrong for chat-app link previews. All
+  now point at a real photo from that page, plus an `og:image:alt`.
+- **`waffle-station-hire.html` was advertising a pancake photo** (`pancakes-event.JPEG`) in
+  both its `og:image` and its `Service` JSON-LD `image`. Fixed to the waffle set.
+- Schema `image` is now an **array** of 2-4 photos in different aspect ratios (the documented
+  Google preference) on all four service pages and the homepage `FoodEstablishment`. Keep
+  `logo` as `Logo.png`; `image` should be photography, never the logo.
+- `sitemap.xml` gained the `xmlns:image` namespace and `<image:image><image:loc>` entries
+  (23 unique photos). Only `image:loc` is emitted — Google deprecated `image:caption`,
+  `image:title` and `image:geo_location` in 2022. The sitemap is **generated from the actual
+  page markup**, so re-run that extraction after any media change rather than hand-editing;
+  posters, logos and social icons are excluded.
+
+Thumbnail selection stays algorithmic — these changes make the site *eligible*, they do not
+force it. Expect weeks, not days, and it needs Google to re-crawl.
+
 ### URL structure: deliberately flat
 
 Service pages sit at the root (`/waffle-station-hire.html`), **not** `/services/…`. This was
