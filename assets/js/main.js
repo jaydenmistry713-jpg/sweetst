@@ -184,6 +184,41 @@
       status.textContent = msg;
     };
 
+    /* Optional prefill from the query string, used by the shareable /book
+       link: the owner can paste in what the client already told them on
+       WhatsApp/Instagram (e.g. /book?name=Sarah&date=2026-09-12&service=waffle)
+       so the client only fills the gaps. Values are set, never submitted
+       blind — the client still sees and can change every field. */
+    if (form.hasAttribute("data-prefill") && window.location.search) {
+      const params = new URLSearchParams(window.location.search);
+      ["name", "email", "phone", "guests", "date", "time", "location", "message"].forEach((key) => {
+        const value = params.get(key);
+        const field = value && form.querySelector('[name="' + key + '"]');
+        if (field) field.value = value;
+      });
+
+      // service=waffle,chai — matched against per-service keywords so short
+      // words work in a hand-typed link. Matching is one-way (term inside the
+      // keyword list) on purpose: "chaat" must not also tick Chai.
+      const KEYWORDS = {
+        "mini pancakes": "mini pancakes pancake pancakes",
+        "waffle cart": "waffle cart waffles waffle station stick",
+        "gol gappe & chaat": "gol gappe golgappe chaat pani puri street food",
+        "chai": "chai masala chai karak tea",
+      };
+      const wanted = (params.get("service") || params.get("services") || "")
+        .toLowerCase()
+        .split(",")
+        .map((s) => s.trim())
+        .filter(Boolean);
+      if (wanted.length) {
+        form.querySelectorAll('input[name="items[]"]').forEach((box) => {
+          const keywords = KEYWORDS[box.value.toLowerCase()] || box.value.toLowerCase();
+          if (wanted.some((w) => keywords.indexOf(w) !== -1)) box.checked = true;
+        });
+      }
+    }
+
     form.addEventListener("submit", (e) => {
       e.preventDefault();
 
@@ -214,6 +249,8 @@
           location: fd.get("location"),
           services: fd.getAll("items[]"),
           message: fd.get("message"),
+          // "website" (contact page) or "link" (the shareable /book page).
+          source: form.dataset.source || "website",
           "bot-field": fd.get("bot-field") || "",
         }),
       }).catch(() => {});
@@ -231,6 +268,8 @@
             "Thank you! Your enquiry is in — we’ll be in touch within 24 hours with your tailored quote."
           );
           if (status) status.scrollIntoView({ behavior: "smooth", block: "center" });
+          // /book listens for this to swap the form out for a confirmation.
+          form.dispatchEvent(new CustomEvent("booking:sent", { bubbles: true }));
         })
         .catch(() => {
           setStatus(

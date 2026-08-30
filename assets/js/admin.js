@@ -28,6 +28,12 @@
 
   var SERVICES = ["Mini Pancakes", "Waffle Cart", "Gol Gappe & Chaat", "Masala Chai"];
 
+  var SOURCE_LABEL = {
+    website: "Website enquiry",
+    link: "Booking link",
+    manual: "Added manually"
+  };
+
   var STATUS_LABEL = {
     "new": "New",
     quoted: "Quoted",
@@ -372,7 +378,7 @@
         row("Total", money(b.total)) +
         row("Deposit paid", money(b.deposit)) +
         row("Balance due", status === "confirmed" || status === "done" ? balanceOf(b) : "") +
-        row("Source", b.source === "manual" ? "Added manually" : "Website enquiry") +
+        row("Source", SOURCE_LABEL[b.source] || "Website enquiry") +
       "</div>" +
       quickLinks(b) +
       (b.message ? '<div class="d-block"><span>Their message</span><p>' + escapeHtml(b.message) + "</p></div>" : "") +
@@ -561,6 +567,70 @@
   }
 
   $("addBookingBtn").addEventListener("click", function () { openBookingForm(null); });
+
+  /* ---------- Send the booking link ----------
+     For enquiries that arrive on WhatsApp or Instagram: instead of copying
+     their details out of the chat, send them /book and let them fill it in.
+     Their submission lands in this list like any website enquiry, tagged
+     "Booking link". The name is optional and only pre-fills the form. */
+
+  function copyToClipboard(input, btn, label) {
+    input.select();
+    var done = function () {
+      btn.textContent = "Copied!";
+      setTimeout(function () { btn.textContent = label; }, 1800);
+    };
+    if (navigator.clipboard) {
+      navigator.clipboard.writeText(input.value).then(done, function () {
+        document.execCommand("copy");
+        done();
+      });
+    } else {
+      document.execCommand("copy");
+      done();
+    }
+  }
+
+  $("shareLinkBtn").addEventListener("click", function () {
+    openSheet("Send booking link",
+      '<p class="sheet-lead">Send this to anyone who enquired on WhatsApp or Instagram. They fill in their own details and the booking appears here automatically.</p>' +
+      '<div class="form-grid">' +
+        '<div class="field full"><label for="shareName">Their name (optional)</label>' +
+          '<input type="text" id="shareName" placeholder="e.g. Sarah" autocomplete="off" /></div>' +
+      "</div>" +
+      '<p class="form-note" style="margin-top:0">Adding a name just pre-fills it on the form — they can still change it.</p>' +
+      '<div class="result-url">' +
+        '<input type="text" id="shareUrl" readonly />' +
+        '<button type="button" class="btn btn-primary" id="shareCopy">Copy</button>' +
+      "</div>" +
+      '<div class="sheet-actions">' +
+        '<a class="btn btn-ghost btn-sm" id="shareWa" href="#" target="_blank" rel="noopener">Send on WhatsApp</a>' +
+        '<a class="btn btn-ghost btn-sm" id="shareOpen" href="/book" target="_blank" rel="noopener">Preview the form</a>' +
+      "</div>"
+    );
+
+    var nameEl = $("shareName");
+    var urlEl = $("shareUrl");
+
+    function build() {
+      var name = nameEl.value.trim();
+      var url = window.location.origin + "/book" +
+        (name ? "?name=" + encodeURIComponent(name) : "");
+      urlEl.value = url;
+      $("shareOpen").href = url;
+      $("shareWa").href = "https://wa.me/?text=" + encodeURIComponent(
+        (name ? "Hi " + name + "! " : "Hi! ") +
+        "Pop your event details in here and we'll check the date and send your quote: " + url
+      );
+    }
+
+    nameEl.addEventListener("input", build);
+    build();
+
+    $("shareCopy").addEventListener("click", function () {
+      copyToClipboard(urlEl, this, "Copy");
+    });
+  });
 
   /* ---------- Card + sheet actions ---------- */
 
@@ -846,21 +916,7 @@
   /* ---------- Copy link ---------- */
 
   $("copyBtn").addEventListener("click", function () {
-    var input = $("resultUrl");
-    input.select();
-    var done = function () {
-      $("copyBtn").textContent = "Copied!";
-      setTimeout(function () { $("copyBtn").textContent = "Copy"; }, 1800);
-    };
-    if (navigator.clipboard) {
-      navigator.clipboard.writeText(input.value).then(done, function () {
-        document.execCommand("copy");
-        done();
-      });
-    } else {
-      document.execCommand("copy");
-      done();
-    }
+    copyToClipboard($("resultUrl"), this, "Copy");
   });
 
   /* ---------- Create another ---------- */

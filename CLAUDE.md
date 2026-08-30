@@ -48,6 +48,9 @@ Deployed on **Netlify** at `https://sweetst.co.uk`.
 
   gallery.html        Full photo gallery (lightbox) + event video rail
   contact.html        Booking form (Netlify Forms) + FAQ  ← main conversion page
+  book.html           Self-service booking form at /book (noindex). The link the
+                      owner sends to WhatsApp/Instagram enquirers so they enter
+                      their own details. Same fields as contact.html.
   quote.html          Client-facing quote viewer (noindex) — reads /quote/<slug>
   admin.html          Owner-only bookings CRM + quote builder (noindex, password-gated).
                       Also holds the hidden `booking-confirmed` Netlify Forms stub.
@@ -61,11 +64,12 @@ Deployed on **Netlify** at `https://sweetst.co.uk`.
   netlify/functions/
     create-quote.mts  POST /api/quotes  — admin-gated; verifies password, writes Blob, returns slug+url
     get-quote.mts     GET  /api/quotes/:slug — public read for the quote viewer
-    save-booking.mts  POST /api/bookings — public; contact form saves each enquiry to the `bookings` Blob store (honeypot-checked)
+    save-booking.mts  POST /api/bookings — public; the contact form and /book save each
+                      enquiry to the `bookings` Blob store (honeypot-checked)
     bookings-admin.mts POST /api/bookings-admin — admin-gated; action: list | create |
                       update | confirm | delete. `confirm` also fires the notification email.
 
-  netlify.toml        publish=".", functions dir, /quote/* → /quote.html rewrite, cache headers
+  netlify.toml        publish=".", functions dir, /quote/* and /book rewrites, cache headers
   package.json        deps: @netlify/blobs, @netlify/functions
   Images/             All media (see casing note below)
   sitemap.xml, robots.txt, site.webmanifest, favicons
@@ -130,7 +134,7 @@ Deployed on **Netlify** at `https://sweetst.co.uk`.
   wide-gamut photos, and it fails silently.
   Older originals are recoverable from git history; newer source media is gitignored (below).
 - **Cache-busting for CSS/JS:** the `<link>`/`<script>` refs carry a `?v=N` query
-  (currently `?v=4`, bumped sitewide — including `quote.html`/`admin.html`, which had lagged
+  (currently `?v=5`, bumped sitewide — including `quote.html`/`admin.html`, which had lagged
   at `?v=2`). `/assets/*` is `must-revalidate` and `/Images/*` is `max-age=86400`
   (see `netlify.toml`). When you change `style.css`/`main.js` etc., bump the `?v=` number so
   returning visitors get the update immediately.
@@ -211,8 +215,13 @@ Website enquiries (`save-booking.mts`) and manual entries (`bookings-admin` `act
 id name email phone guests date time location services[] message
 notes total deposit depositPaidAt confirmedAt notifiedAt
 status  new | quoted | confirmed | done | cancelled
-quoteSlug  source: "website" | "manual"  createdAt updatedAt
+quoteSlug  source: "website" | "link" | "manual"  createdAt updatedAt
 ```
+
+`source` says where the booking came from: `website` (contact page), `link` (the client
+filled in `/book` themselves) or `manual` (the owner typed it in). `save-booking.mts` only
+accepts `website`/`link` from a public caller — anything else falls back to `website`, so a
+crafted POST can't pose as an owner entry. The admin detail sheet shows it as a Source row.
 
 `date` is always `YYYY-MM-DD` (from `input[type=date]`) — the calendar keys off that string,
 so parse it as `new Date(key + "T00:00:00")`, never `new Date(key)`, or it shifts a day in
@@ -221,8 +230,8 @@ Balance = total - deposit, computed at render, never stored.
 
 ### Lifecycle
 
-1. Enquiry arrives (contact form) or the owner taps **+ Add** for a phone/WhatsApp/Instagram
-   booking. Status `new`.
+1. Enquiry arrives (contact form or `/book`), or the owner taps **+ Add** for a
+   phone/WhatsApp/Instagram booking. Status `new`.
 2. **Create quote** pre-fills the quote form from the booking (name, date, guests, agreed
    total as the price, matched service checkboxes — "Chai" maps to "Masala Chai") and
    switches to the Quote tab. On generate the booking gets the `quoteSlug` and moves to
@@ -232,10 +241,36 @@ Balance = total - deposit, computed at render, never stored.
    deliberately one action, not two — the booking is not confirmed until the deposit lands.
 4. `done` / `cancelled` are manual. `done` keeps old events out of the active list.
 
+### The shareable booking link (`/book`)
+
+For enquiries that arrive on WhatsApp or Instagram, the owner sends `/book` instead of
+transcribing details out of the chat. The client fills it in themselves and the booking
+lands in the list like a website enquiry, tagged **Booking link**.
+
+- **Admin → Bookings → "Send link"** builds the URL, copies it, or hands it to WhatsApp's
+  share sheet (`https://wa.me/?text=…`, no number, so the owner picks the chat).
+- **Query-string prefill:** `/book?name=Sarah&date=2026-09-12&service=waffle,chai`.
+  `main.js` fills any of `name email phone guests date time location message` plus
+  `service`/`services` (comma-separated). Service matching is **one-way** against a keyword
+  list — a term must appear *inside* a service's keywords — because bare substring matching
+  in both directions ticked "Chai" for `?service=chaat`.
+- The form is the same `contact` Netlify form as the contact page, so the existing email
+  notification covers it with no extra dashboard setup. A hidden `source` field
+  (`Booking link` vs `Website`) tells the two apart in the email; it is declared on **both**
+  forms. The booking record's `source` comes from `data-source` on the form, not that field.
+- **`noindex, follow`** — it is a near-duplicate of `contact.html` and must never compete
+  with it in search. Deliberately **not** in `robots.txt` (a disallow would stop Google
+  reading the noindex) and **not** in `sitemap.xml`. og tags point at a real photo because
+  the link is pasted into chat apps that render a preview.
+- `main.js` fires a `booking:sent` event on the form after a successful submit; `/book`
+  listens for it and swaps the form for a confirmation panel.
+
 ### Calendar tab
 
 "Next up" card (nearest future booking that is not done/cancelled) + a Monday-first month
-grid. Days carry up to three dots — green = confirmed, rose = not yet. Tapping a day opens
+grid. Days carry up to three dots — a filled green dot = confirmed, a rose **ring** = not yet.
+They differ by shape as well as colour, and are sized for a phone at arm's length; the
+original 6px muted dots were near-impossible to tell apart on mobile. Tapping a day opens
 that day's bookings and a **Print run sheet** button: a print-only `#runsheet` (see the
 `@media print` block) listing each job's time, address, contact name + number, services,
 guests, balance due, **notes** and the original enquiry message. Screen UI is hidden in
@@ -284,8 +319,11 @@ confirmation emails.** The recipient is set once in the dashboard (see below), n
 
 - **Env var `ADMIN_PASSWORD`** — set in the Netlify dashboard (Site config → Environment
   variables). The quote builder and creation endpoint are non-functional without it.
-- **Netlify Forms** — the `contact` form in `contact.html` uses `data-netlify="true"` +
-  hidden `form-name` + honeypot; Netlify detects it during the **Git build**. `main.js`
+- **Netlify Forms** — the `contact` form uses `data-netlify="true"` + hidden `form-name` +
+  honeypot; Netlify detects it during the **Git build**. It is declared on **two** pages
+  (`contact.html` and `book.html`) under the same name, so one email notification covers
+  both; Netlify unions the declared fields. Any field added to one should be added to the
+  other, or it won't appear on submissions from that page. `main.js`
   submits it via `fetch` to `/` (email) AND to `/api/bookings` (Bookings store).
   **Email notifications are a manual one-time step** in the dashboard: Site config →
   Forms/Notifications → add an Email notification. Detection + email do not happen from the

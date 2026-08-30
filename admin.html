@@ -11,7 +11,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="/assets/css/style.css?v=4" />
+  <link rel="stylesheet" href="/assets/css/style.css?v=5" />
 </head>
 <body class="admin-body">
 
@@ -87,7 +87,10 @@
             <span class="eyebrow">Enquiries &amp; bookings</span>
             <h1 class="panel-title">All bookings</h1>
           </div>
-          <button type="button" class="btn btn-primary btn-sm" id="addBookingBtn">+ Add</button>
+          <div class="panel-actions">
+            <button type="button" class="btn btn-ghost btn-sm" id="shareLinkBtn">Send link</button>
+            <button type="button" class="btn btn-primary btn-sm" id="addBookingBtn">+ Add</button>
+          </div>
         </div>
 
         <div class="chips" id="statusFilter" role="tablist" aria-label="Filter by status">
@@ -231,6 +234,6 @@
   <!-- Print-only run sheet, filled in by admin.js -->
   <div class="runsheet" id="runsheet" aria-hidden="true"></div>
 
-  <script src="/assets/js/admin.js?v=4"></script>
+  <script src="/assets/js/admin.js?v=5"></script>
 </body>
 </html>

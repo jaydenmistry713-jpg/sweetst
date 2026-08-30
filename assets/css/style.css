@@ -2141,6 +2141,28 @@ a.card:hover .card-link::after {
   white-space: nowrap;
 }
 
+.panel-actions {
+  display: flex;
+  flex: none;
+  gap: 8px;
+}
+
+/* Two buttons plus a title is too much for a phone header row — drop the
+   buttons onto their own full-width row instead of squeezing the title. */
+@media (max-width: 540px) {
+  .panel-head {
+    flex-wrap: wrap;
+  }
+
+  .panel-actions {
+    width: 100%;
+  }
+
+  .panel-actions .btn {
+    flex: 1 1 auto;
+  }
+}
+
 .panel-title {
   font-family: var(--font-display);
   font-weight: 800;
@@ -2477,7 +2499,7 @@ a.card:hover .card-link::after {
 
 .cal-cell.has-events {
   font-weight: 800;
-  border-color: var(--outline);
+  border-color: var(--outline-strong);
 }
 
 .cal-cell.is-today {
@@ -2493,28 +2515,42 @@ a.card:hover .card-link::after {
 
 .cal-cell .dots {
   display: flex;
+  align-items: center;
   gap: 3px;
-  height: 6px;
+  height: 9px;
 }
 
+/* These are read at arm's length on a phone, so they are deliberately large
+   for the cell and differ by SHAPE as well as colour (filled = confirmed,
+   ring = not yet) — the old 6px muted dots were near-indistinguishable. */
 .dot {
-  width: 6px;
-  height: 6px;
+  width: 9px;
+  height: 9px;
   border-radius: 50%;
   display: inline-block;
   background: var(--gold-deep);
+  box-sizing: border-box;
 }
 
 .dot.confirmed {
-  background: #4f7343;
+  background: #2f7a45;
 }
 
 .dot.pending {
-  background: var(--rose-deep);
+  background: transparent;
+  border: 2.5px solid #c2564a;
 }
 
 .cal-cell.is-selected .dot {
-  outline: 1px solid rgba(251, 244, 234, 0.6);
+  box-shadow: 0 0 0 1.5px rgba(251, 244, 234, 0.9);
+}
+
+.cal-cell.is-selected .dot.confirmed {
+  background: #62c07e;
+}
+
+.cal-cell.is-selected .dot.pending {
+  border-color: #f0a99c;
 }
 
 .cal-key {

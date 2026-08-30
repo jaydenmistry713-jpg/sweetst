@@ -9,6 +9,13 @@
   to = "/quote.html"
   status = 200
 
+# Short, shareable booking link. /book is what the owner pastes into WhatsApp
+# and Instagram DMs; it serves the self-service booking form.
+[[redirects]]
+  from = "/book"
+  to = "/book.html"
+  status = 200
+
 # Cache media for a day — fast repeat visits, but not "immutable" so replaced
 # images (same filename) still propagate within 24h instead of being stuck.
 [[headers]]

@@ -3,6 +3,12 @@ import { getStore } from "@netlify/blobs";
 
 // Public endpoint the contact form calls (in addition to Netlify Forms email)
 // so every enquiry is saved to the Bookings store for the admin panel.
+// Both the site contact form and the shareable /book page post here; they are
+// told apart by `source` (see SOURCES below), which the admin panel displays.
+
+// Only these may be set by a public caller. Anything else (including
+// "manual", which means the owner typed it in) falls back to "website".
+const SOURCES = ["website", "link"];
 
 const json = (body: unknown, status = 200) =>
   new Response(JSON.stringify(body), {
@@ -32,6 +38,8 @@ export default async (req: Request) => {
       ? data["items[]"]
       : [];
 
+  const source = String(data.source || "").trim();
+
   const id =
     "bk_" + Date.now().toString(36) + "_" + Math.random().toString(36).slice(2, 7);
 
@@ -55,7 +63,7 @@ export default async (req: Request) => {
     confirmedAt: "",
     status: "new", // new | quoted | confirmed | done | cancelled
     quoteSlug: "",
-    source: "website",
+    source: SOURCES.indexOf(source) === -1 ? "website" : source,
     createdAt: now,
     updatedAt: now,
   };

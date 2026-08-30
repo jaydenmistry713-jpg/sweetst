@@ -15,7 +15,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="/assets/css/style.css?v=4" />
+  <link rel="stylesheet" href="/assets/css/style.css?v=5" />
   <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -126,6 +126,9 @@
         <div class="reveal contact-form-col">
           <form class="form-card" name="contact" method="POST" data-netlify="true" netlify-honeypot="bot-field" data-booking>
             <input type="hidden" name="form-name" value="contact" />
+            <!-- Distinguishes these from the /book link's submissions in the
+                 enquiry email. Both use the `contact` form, so both send it. -->
+            <input type="hidden" name="source" value="Website" />
             <p hidden>
               <label>Don't fill this out if you're human: <input name="bot-field" /></label>
             </p>
@@ -264,6 +267,6 @@
     <img src="/Images/whatsapp-logo.png" alt="WhatsApp" />
   </a>
 
-  <script src="/assets/js/main.js?v=4"></script>
+  <script src="/assets/js/main.js?v=5"></script>
 </body>
 </html>
